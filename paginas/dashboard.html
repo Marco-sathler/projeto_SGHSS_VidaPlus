@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - VidaPlus</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/components.css">
+    <link rel="stylesheet" href="../styles/responsive.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/button-icons.css">
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/notifications.css">
+    <link rel="stylesheet" href="../styles/filters.css">
+    <link rel="stylesheet" href="../styles/charts.css">
+    <link rel="stylesheet" href="../styles/chat.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .dashboard-page {
+            min-height: 100vh;
+            background: var(--light-gray);
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            padding: var(--spacing-8) 0;
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .dashboard-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+        }
+        
+        .dashboard-header h1 {
+            font-size: var(--font-size-4xl);
+            margin-bottom: var(--spacing-2);
+        }
+        
+        .dashboard-header p {
+            font-size: var(--font-size-lg);
+            opacity: 0.9;
+        }
+        
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .stat-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .stat-content h3 {
+            color: var(--gray-800);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-2);
+        }
+        
+        .stat-number {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: var(--spacing-1);
+        }
+        
+        .stat-change {
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+        }
+        
+        .stat-change.positive {
+            color: var(--success-color);
+        }
+        
+        .stat-change.negative {
+            color: var(--danger-color);
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .action-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            border: 1px solid var(--gray-200);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+        
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .action-title {
+            color: var(--gray-800);
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--spacing-2);
+        }
+        
+        .action-description {
+            color: var(--gray-600);
+            font-size: var(--font-size-sm);
+            line-height: 1.5;
+        }
+        
+        .dashboard-filters {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: var(--spacing-6);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .dashboard-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .card-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: var(--font-size-2xl);
+            font-weight: 600;
+        }
+        
+        .card-info h3 {
+            color: var(--gray-800);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-1);
+        }
+        
+        .card-type {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: var(--spacing-1);
+        }
+        
+        .card-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .status-indicator.active {
+            background: var(--success-color);
+        }
+        
+        .status-indicator.warning {
+            background: var(--warning-color);
+        }
+        
+        .status-indicator.info {
+            background: var(--info-color);
+        }
+        
+        .card-details {
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-2);
+            font-size: var(--font-size-sm);
+        }
+        
+        .detail-label {
+            color: var(--gray-600);
+        }
+        
+        .detail-value {
+            color: var(--gray-800);
+            font-weight: 500;
+        }
+        
+        .card-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: var(--spacing-3);
+            background: var(--gray-50);
+            border-radius: 12px;
+        }
+        
+        .stat-number {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: var(--font-size-xs);
+            color: var(--gray-600);
+            text-transform: uppercase;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: var(--spacing-2);
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: var(--spacing-2) var(--spacing-4);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-1);
+        }
+        
+        .action-btn.primary {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .action-btn.secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+        
+        .action-btn.success {
+            background: var(--success-color);
+            color: var(--white);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-3) var(--spacing-3) var(--spacing-10);
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .filters select {
+            width: 100%;
+            padding: var(--spacing-3);
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+            background: var(--white);
+        }
+        
+        .filters select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="top-navbar" id="top-navbar">
+        <div class="nav-brand" onclick="window.location.href='dashboard.html'">
+            <div class="brand-logo">
+                <div class="v-plus">V+</div>
+            </div>
+            <div class="brand-text">
+                <h1>VidaPlus</h1>
+                <span>Sistema Hospitalar</span>
+            </div>
+        </div>
+
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-link active" data-page="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            
+            <a href="pacientes.html" class="nav-link" data-page="pacientes">
+                <i class="fas fa-user-injured"></i>
+                <span>Pacientes</span>
+            </a>
+            
+            <a href="agendamento.html" class="nav-link" data-page="agendamento">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Agendamento</span>
+            </a>
+            
+            <a href="telemedicina.html" class="nav-link" data-page="telemedicina">
+                <i class="fas fa-video"></i>
+                <span>Telemedicina</span>
+            </a>
+            
+            <a href="profissionais.html" class="nav-link" data-page="profissionais">
+                <i class="fas fa-user-md"></i>
+                <span>Profissionais</span>
+            </a>
+            
+            <a href="leitos.html" class="nav-link" data-page="leitos">
+                <i class="fas fa-bed"></i>
+                <span>Leitos</span>
+            </a>
+            
+            <a href="relatorios.html" class="nav-link" data-page="relatorios">
+                <i class="fas fa-chart-line"></i>
+                <span>Relatórios</span>
+            </a>
+            
+            <a href="configuracoes.html" class="nav-link" data-page="configuracoes">
+                <i class="fas fa-cog"></i>
+                <span>Configurações</span>
+            </a>
+        </div>
+
+        <div class="nav-actions">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" placeholder="Buscar...">
+            </div>
+            
+            <button class="action-btn" onclick="openModal('notificationsModal')">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </button>
+            
+            <button class="action-btn" onclick="openModal('infoModal')">
+                <i class="fas fa-question-circle"></i>
+            </button>
+            
+            <div class="user-profile" onclick="toggleUserMenu()">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h4>Dr. João Santos</h4>
+                    <p>Administrador</p>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+                
+                <!-- User Menu Dropdown -->
+                <div class="user-menu" id="user-menu">
+                    <a href="#" class="user-menu-item">
+                        <i class="fas fa-user"></i>
+                        <span>Meu Perfil</span>
+                    </a>
+                    <a href="#" class="user-menu-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </a>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Modal de Notificações -->
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Notificações</h3>
+                <button class="modal-close" onclick="closeModal('notificationsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Novo paciente cadastrado</h4>
+                        <p>Maria Silva foi cadastrada no sistema</p>
+                        <span class="notification-time">Há 5 minutos</span>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Consulta agendada</h4>
+                        <p>Consulta com Dr. João marcada para amanhã</p>
+                        <span class="notification-time">Há 15 minutos</span>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Leito disponível</h4>
+                        <p>Leito 205 foi liberado e está disponível</p>
+                        <span class="notification-time">Há 1 hora</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Informações -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Informações do Sistema</h3>
+                <button class="modal-close" onclick="closeModal('infoModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="info-section">
+                    <h4><i class="fas fa-info-circle"></i> Sobre o VidaPlus</h4>
+                    <p>Sistema hospitalar completo para gestão de pacientes, profissionais, leitos e agendamentos.</p>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-users"></i> Usuários Ativos</h4>
+                    <p>Atualmente há <strong>127</strong> usuários ativos no sistema.</p>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-hospital"></i> Estatísticas</h4>
+                    <ul>
+                        <li>Pacientes cadastrados: <strong>1.234</strong></li>
+                        <li>Profissionais: <strong>89</strong></li>
+                        <li>Leitos ocupados: <strong>156/200</strong></li>
+                        <li>Consultas hoje: <strong>45</strong></li>
+                    </ul>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-clock"></i> Última Atualização</h4>
+                    <p>Dados atualizados em: <strong>15/12/2025 às 14:30</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <h3>Menu</h3>
+                <button class="close-menu" onclick="closeMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="mobile-nav-menu">
+                <a href="dashboard.html" class="mobile-nav-link active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                
+                <a href="pacientes.html" class="mobile-nav-link" data-page="pacientes">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Pacientes</span>
+                </a>
+                
+                <a href="agendamento.html" class="mobile-nav-link" data-page="agendamento">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Agendamento</span>
+                </a>
+                
+                <a href="telemedicina.html" class="mobile-nav-link" data-page="telemedicina">
+                    <i class="fas fa-video"></i>
+                    <span>Telemedicina</span>
+                </a>
+                
+                <a href="profissionais.html" class="mobile-nav-link" data-page="profissionais">
+                    <i class="fas fa-user-md"></i>
+                    <span>Profissionais</span>
+                </a>
+                
+                <a href="leitos.html" class="mobile-nav-link" data-page="leitos">
+                    <i class="fas fa-bed"></i>
+                    <span>Leitos</span>
+                </a>
+                
+                <a href="relatorios.html" class="mobile-nav-link" data-page="relatorios">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Relatórios</span>
+                </a>
+                
+                <a href="configuracoes.html" class="mobile-nav-link" data-page="configuracoes">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="dashboard-page page-transition">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="dashboard-header-content">
+                    <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+                    <p>Visão geral do sistema VidaPlus</p>
+                </div>
+            </header>
+
+            <div class="dashboard-container">
+                <!-- Métricas em Tempo Real -->
+                <div class="metrics-grid">
+                    <div class="metric-card" data-type="patients">
+                        <div class="metric-value">2,847</div>
+                        <div class="metric-label">Pacientes Ativos</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +15% este mês
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card" data-type="professionals">
+                        <div class="metric-value">156</div>
+                        <div class="metric-label">Profissionais</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +8 este mês
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card" data-type="appointments">
+                        <div class="metric-value">89</div>
+                        <div class="metric-label">Consultas Hoje</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            +12 vs ontem
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card" data-type="beds">
+                        <div class="metric-value">85%</div>
+                        <div class="metric-label">Leitos Ocupados</div>
+                        <div class="metric-change negative">
+                            <i class="fas fa-arrow-down"></i>
+                            134 leitos
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros Avançados -->
+                <div class="filters-container">
+                    <div class="filters-header">
+                        <div class="filters-title">
+                            <i class="fas fa-filter"></i>
+                            Filtros Avançados
+                        </div>
+                        <button class="filters-toggle">
+                            <i class="fas fa-chevron-up"></i>
+                            Ocultar
+                        </button>
+                    </div>
+                    <div class="filters-content">
+                        <div class="filter-group">
+                            <label class="filter-label">Período</label>
+                            <select class="filter-select">
+                                <option value="today">Hoje</option>
+                                <option value="week">Esta Semana</option>
+                                <option value="month" selected>Este Mês</option>
+                                <option value="quarter">Este Trimestre</option>
+                                <option value="year">Este Ano</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Setor</label>
+                            <select class="filter-select">
+                                <option value="">Todos</option>
+                                <option value="uti">UTI</option>
+                                <option value="pediatria">Pediatria</option>
+                                <option value="cardiologia">Cardiologia</option>
+                                <option value="ortopedia">Ortopedia</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Status</label>
+                            <select class="filter-select">
+                                <option value="">Todos</option>
+                                <option value="active">Ativo</option>
+                                <option value="inactive">Inativo</option>
+                                <option value="maintenance">Manutenção</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Buscar</label>
+                            <div class="search-container">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" class="search-input" placeholder="Buscar pacientes, leitos...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filters-actions">
+                        <button class="filter-btn primary" data-action="apply">
+                            <i class="fas fa-check"></i>
+                            Aplicar Filtros
+                        </button>
+                        <button class="filter-btn" data-action="clear">
+                            <i class="fas fa-times"></i>
+                            Limpar
+                        </button>
+                        <button class="filter-btn secondary" data-action="export">
+                            <i class="fas fa-download"></i>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Gráficos e Analytics -->
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div class="chart-title">
+                                <div class="chart-icon primary">
+                                    <i class="fas fa-bed"></i>
+                                </div>
+                                Ocupação de Leitos
+                            </div>
+                            <div class="chart-actions">
+                                <button class="chart-btn active" data-period="week">Semana</button>
+                                <button class="chart-btn" data-period="month">Mês</button>
+                                <button class="chart-btn" data-period="quarter">Trimestre</button>
+                                <button class="chart-btn" onclick="testCharts()" style="background: #f59e0b; color: white;">Teste</button>
+                            </div>
+                        </div>
+                        <div class="chart-content">
+                            <canvas id="bed-occupancy-chart" width="300" height="200"></canvas>
+                            <div id="bed-chart-fallback" class="chart-fallback" style="display: none;">
+                                <div class="fallback-content">
+                                    <i class="fas fa-chart-pie"></i>
+                                    <h4>Gráfico de Ocupação</h4>
+                                    <p>Ocupados: 65% | Disponíveis: 25% | Manutenção: 10%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #ef4444;"></div>
+                                <span>Ocupados (65%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #10b981;"></div>
+                                <span>Disponíveis (25%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #f59e0b;"></div>
+                                <span>Manutenção (10%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div class="chart-title">
+                                <div class="chart-icon success">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                Consultas por Mês
+                            </div>
+                            <div class="chart-actions">
+                                <button class="chart-btn active" data-period="6months">6 Meses</button>
+                                <button class="chart-btn" data-period="1year">1 Ano</button>
+                            </div>
+                        </div>
+                        <div class="chart-content">
+                            <canvas id="consultations-chart" width="400" height="250"></canvas>
+                            <div id="consult-chart-fallback" class="chart-fallback" style="display: none;">
+                                <div class="fallback-content">
+                                    <i class="fas fa-chart-line"></i>
+                                    <h4>Consultas por Mês</h4>
+                                    <p>Jan: 120 | Fev: 135 | Mar: 110 | Abr: 145 | Mai: 160 | Jun: 180</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="dashboard-filters">
+                    <div class="filters-grid">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Buscar informações...">
+                        </div>
+                        
+                        <div class="filters">
+                            <select id="period-filter">
+                                <option value="today">Hoje</option>
+                                <option value="week">Esta Semana</option>
+                                <option value="month" selected>Este Mês</option>
+                                <option value="quarter">Este Trimestre</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filters">
+                            <select id="department-filter">
+                                <option value="">Todos os departamentos</option>
+                                <option value="cardiology">Cardiologia</option>
+                                <option value="dermatology">Dermatologia</option>
+                                <option value="orthopedics">Ortopedia</option>
+                                <option value="pediatrics">Pediatria</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filters">
+                            <select id="sort-filter">
+                                <option value="date">Ordenar por Data</option>
+                                <option value="name">Ordenar por Nome</option>
+                                <option value="priority">Ordenar por Prioridade</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid de Cards -->
+                <div class="dashboard-grid">
+                    <!-- Card 1 - Consultas -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-avatar">CO</div>
+                            <div class="card-info">
+                                <h3>Consultas</h3>
+                                <div class="card-type">Agendamento - Hoje</div>
+                                <div class="card-status">
+                                    <div class="status-indicator active"></div>
+                                    <span>Ativo</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Total agendadas:</span>
+                                <span class="detail-value">89</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Realizadas:</span>
+                                <span class="detail-value">45</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Pendentes:</span>
+                                <span class="detail-value">44</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Canceladas:</span>
+                                <span class="detail-value">2</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">45</div>
+                                <div class="stat-label">Realizadas</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">44</div>
+                                <div class="stat-label">Pendentes</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">98%</div>
+                                <div class="stat-label">Sucesso</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="action-btn primary" onclick="viewConsultations()">
+                                <i class="fas fa-eye"></i>
+                                Ver Todas
+                            </button>
+                            <button class="action-btn secondary" onclick="scheduleConsultation()">
+                                <i class="fas fa-plus"></i>
+                                Agendar
+                            </button>
+                            <button class="action-btn success" onclick="exportConsultations()">
+                                <i class="fas fa-download"></i>
+                                Exportar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 - Pacientes -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-avatar">PA</div>
+                            <div class="card-info">
+                                <h3>Pacientes</h3>
+                                <div class="card-type">Gestão - Ativos</div>
+                                <div class="card-status">
+                                    <div class="status-indicator active"></div>
+                                    <span>Ativo</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Total cadastrados:</span>
+                                <span class="detail-value">2,847</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Novos este mês:</span>
+                                <span class="detail-value">156</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Em tratamento:</span>
+                                <span class="detail-value">1,234</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Alta recente:</span>
+                                <span class="detail-value">89</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">2,847</div>
+                                <div class="stat-label">Total</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">156</div>
+                                <div class="stat-label">Novos</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">+15%</div>
+                                <div class="stat-label">Crescimento</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="action-btn primary" onclick="viewPatients()">
+                                <i class="fas fa-eye"></i>
+                                Ver Todos
+                            </button>
+                            <button class="action-btn secondary" onclick="addPatient()">
+                                <i class="fas fa-plus"></i>
+                                Cadastrar
+                            </button>
+                            <button class="action-btn success" onclick="exportPatients()">
+                                <i class="fas fa-download"></i>
+                                Exportar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 - Profissionais -->
+                    <div class="dashboard-card card-animate hover-lift">
+                        <div class="card-header">
+                            <div class="card-avatar">PR</div>
+                            <div class="card-info">
+                                <h3>Profissionais</h3>
+                                <div class="card-type">Equipe - Ativos</div>
+                                <div class="card-status">
+                                    <div class="status-indicator active"></div>
+                                    <span>Ativo</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Total na equipe:</span>
+                                <span class="detail-value">156</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Médicos:</span>
+                                <span class="detail-value">89</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Enfermeiros:</span>
+                                <span class="detail-value">45</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Técnicos:</span>
+                                <span class="detail-value">22</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">156</div>
+                                <div class="stat-label">Total</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">89</div>
+                                <div class="stat-label">Médicos</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">+8</div>
+                                <div class="stat-label">Novos</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="action-btn primary" onclick="viewProfessionals()">
+                                <i class="fas fa-eye"></i>
+                                Ver Todos
+                            </button>
+                            <button class="action-btn secondary" onclick="addProfessional()">
+                                <i class="fas fa-plus"></i>
+                                Contratar
+                            </button>
+                            <button class="action-btn success" onclick="exportProfessionals()">
+                                <i class="fas fa-download"></i>
+                                Exportar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 - Leitos -->
+                    <div class="dashboard-card card-animate hover-lift">
+                        <div class="card-header">
+                            <div class="card-avatar">LE</div>
+                            <div class="card-info">
+                                <h3>Leitos</h3>
+                                <div class="card-type">Ocupação - Hospitalar</div>
+                                <div class="card-status">
+                                    <div class="status-indicator warning"></div>
+                                    <span>Atenção</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Total de leitos:</span>
+                                <span class="detail-value">156</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Ocupados:</span>
+                                <span class="detail-value">134</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Disponíveis:</span>
+                                <span class="detail-value">18</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Manutenção:</span>
+                                <span class="detail-value">4</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">85%</div>
+                                <div class="stat-label">Ocupação</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">18</div>
+                                <div class="stat-label">Disponíveis</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">4</div>
+                                <div class="stat-label">Manutenção</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="action-btn primary" onclick="viewBeds()">
+                                <i class="fas fa-eye"></i>
+                                Ver Todos
+                            </button>
+                            <button class="action-btn secondary" onclick="manageBeds()">
+                                <i class="fas fa-cog"></i>
+                                Gerenciar
+                            </button>
+                            <button class="action-btn success" onclick="exportBeds()">
+                                <i class="fas fa-download"></i>
+                                Exportar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 - Telemedicina -->
+                    <div class="dashboard-card card-animate hover-lift">
+                        <div class="card-header">
+                            <div class="card-avatar">TE</div>
+                            <div class="card-info">
+                                <h3>Telemedicina</h3>
+                                <div class="card-type">Consultas - Virtuais</div>
+                                <div class="card-status">
+                                    <div class="status-indicator info"></div>
+                                    <span>Online</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Sessões hoje:</span>
+                                <span class="detail-value">23</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Em andamento:</span>
+                                <span class="detail-value">4</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Profissionais online:</span>
+                                <span class="detail-value">8</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Avaliação média:</span>
+                                <span class="detail-value">4.9</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">23</div>
+                                <div class="stat-label">Sessões</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">4</div>
+                                <div class="stat-label">Ativas</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">4.9</div>
+                                <div class="stat-label">Avaliação</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="action-btn primary" onclick="viewTelemedicine()">
+                                <i class="fas fa-eye"></i>
+                                Ver Todas
+                            </button>
+                            <button class="action-btn secondary" onclick="startSession()">
+                                <i class="fas fa-video"></i>
+                                Iniciar
+                            </button>
+                            <button class="action-btn success" onclick="exportTelemedicine()">
+                                <i class="fas fa-download"></i>
+                                Exportar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 - Relatórios -->
+                    <div class="dashboard-card card-animate hover-lift">
+                        <div class="card-header">
+                            <div class="card-avatar">RE</div>
+                            <div class="card-info">
+                                <h3>Relatórios</h3>
+                                <div class="card-type">Análise - Dados</div>
+                                <div class="card-status">
+                                    <div class="status-indicator active"></div>
+                                    <span>Ativo</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Total gerados:</span>
+                                <span class="detail-value">156</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Em processamento:</span>
+                                <span class="detail-value">8</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Downloads hoje:</span>
+                                <span class="detail-value">45</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Análises ativas:</span>
+                                <span class="detail-value">12</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">156</div>
+                                <div class="stat-label">Relatórios</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">8</div>
+                                <div class="stat-label">Processando</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">45</div>
+                                <div class="stat-label">Downloads</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="action-btn primary" onclick="viewReports()">
+                                <i class="fas fa-eye"></i>
+                                Ver Todos
+                            </button>
+                            <button class="action-btn secondary" onclick="generateReport()">
+                                <i class="fas fa-plus"></i>
+                                Gerar
+                            </button>
+                            <button class="action-btn success" onclick="exportReports()">
+                                <i class="fas fa-download"></i>
+                                Exportar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Widget -->
+    <button class="chat-toggle-btn" id="chat-toggle">
+        <i class="fas fa-comments"></i>
+        <div class="notification-badge">3</div>
+    </button>
+
+    <div class="chat-widget" id="chat-widget">
+        <div class="chat-header" id="chat-header">
+            <div class="chat-title">
+                <i class="fas fa-comments"></i>
+                Chat Interno
+            </div>
+            <div class="chat-status">
+                <div class="status-indicator"></div>
+                <span>Online</span>
+            </div>
+            <button class="chat-toggle" id="chat-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="chat-participants">
+            <div class="participants-title">Participantes Online</div>
+            <div class="participants-list">
+                <div class="participant">
+                    <div class="participant-avatar">MS</div>
+                    <span>Maria Silva</span>
+                </div>
+                <div class="participant">
+                    <div class="participant-avatar">JC</div>
+                    <span>João Costa</span>
+                </div>
+                <div class="participant">
+                    <div class="participant-avatar">AC</div>
+                    <span>Ana Clara</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-body">
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-message received">
+                    <div class="message-avatar">MS</div>
+                    <div class="message-content">
+                        Olá! Alguém pode me ajudar com o paciente do leito 203?
+                        <div class="message-time">14:30</div>
+                    </div>
+                </div>
+                
+                <div class="chat-message sent">
+                    <div class="message-content">
+                        Claro! O que precisa?
+                        <div class="message-time">14:31</div>
+                    </div>
+                    <div class="message-avatar">VC</div>
+                </div>
+                
+                <div class="chat-message received">
+                    <div class="message-avatar">MS</div>
+                    <div class="message-content">
+                        Preciso de informações sobre a medicação prescrita
+                        <div class="message-time">14:32</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typing-indicator" style="display: none;">
+                <span>João está digitando</span>
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-input">
+            <textarea class="chat-textarea" id="chat-input" placeholder="Digite sua mensagem..."></textarea>
+            <button class="chat-send" id="chat-send">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/navbar.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="../js/enhanced-app.js"></script>
+    <script src="../js/simple-charts.js"></script>
+
+    <script src="../js/animations.js"></script>
+    <script>
+        // Funções para interação
+        function viewConsultations() {
+            window.location.href = 'agendamento.html';
+        }
+        
+        function scheduleConsultation() {
+            alert('Modal de agendamento seria aberto aqui');
+        }
+        
+        function exportConsultations() {
+            alert('Exportando dados de consultas...');
+        }
+        
+        function viewPatients() {
+            window.location.href = 'pacientes.html';
+        }
+        
+        function addPatient() {
+            alert('Modal de cadastro de paciente seria aberto aqui');
+        }
+        
+        function exportPatients() {
+            alert('Exportando dados de pacientes...');
+        }
+        
+        function viewProfessionals() {
+            window.location.href = 'profissionais.html';
+        }
+        
+        function addProfessional() {
+            alert('Modal de contratação seria aberto aqui');
+        }
+        
+        function exportProfessionals() {
+            alert('Exportando dados de profissionais...');
+        }
+        
+        function viewBeds() {
+            window.location.href = 'leitos.html';
+        }
+        
+        function manageBeds() {
+            alert('Modal de gerenciamento de leitos seria aberto aqui');
+        }
+        
+        function exportBeds() {
+            alert('Exportando dados de leitos...');
+        }
+        
+        function viewTelemedicine() {
+            window.location.href = 'telemedicina.html';
+        }
+        
+        function startSession() {
+            alert('Iniciando sessão de telemedicina...');
+        }
+        
+        function exportTelemedicine() {
+            alert('Exportando dados de telemedicina...');
+        }
+        
+        function viewReports() {
+            window.location.href = 'relatorios.html';
+        }
+        
+        function generateReport() {
+            alert('Modal de geração de relatório seria aberto aqui');
+        }
+        
+        function exportReports() {
+            alert('Exportando relatórios...');
+        }
+        
+        // Filtros
+        document.getElementById('period-filter').addEventListener('change', function() {
+            console.log('Filtro de período:', this.value);
+        });
+        
+        document.getElementById('department-filter').addEventListener('change', function() {
+            console.log('Filtro de departamento:', this.value);
+        });
+        
+        document.getElementById('sort-filter').addEventListener('change', function() {
+            console.log('Ordenação:', this.value);
+        });
+        
+        // Busca
+        document.querySelector('.search-box input').addEventListener('input', function() {
+            console.log('Busca:', this.value);
+        });
+
+        // Chat System
+        const chatToggle = document.getElementById('chat-toggle');
+        const chatWidget = document.getElementById('chat-widget');
+        const chatClose = document.getElementById('chat-close');
+        const chatInput = document.getElementById('chat-input');
+        const chatSend = document.getElementById('chat-send');
+        const chatMessages = document.getElementById('chat-messages');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        chatToggle.addEventListener('click', () => {
+            chatWidget.classList.add('open');
+            chatToggle.style.display = 'none';
+        });
+
+        chatClose.addEventListener('click', () => {
+            chatWidget.classList.remove('open');
+            chatToggle.style.display = 'block';
+        });
+
+        chatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            const messageElement = document.createElement('div');
+            messageElement.className = 'chat-message sent';
+            messageElement.innerHTML = `
+                <div class="message-content">
+                    ${message}
+                    <div class="message-time">${new Date().toLocaleTimeString()}</div>
+                </div>
+                <div class="message-avatar">VC</div>
+            `;
+
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            chatInput.value = '';
+
+            // Simular resposta
+            setTimeout(() => {
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    const responseElement = document.createElement('div');
+                    responseElement.className = 'chat-message received';
+                    responseElement.innerHTML = `
+                        <div class="message-avatar">MS</div>
+                        <div class="message-content">
+                            Entendi! Vou verificar isso para você.
+                            <div class="message-time">${new Date().toLocaleTimeString()}</div>
+                        </div>
+                    `;
+                    chatMessages.appendChild(responseElement);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 2000);
+            }, 1000);
+        }
+
+        function showTypingIndicator() {
+            typingIndicator.style.display = 'flex';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            typingIndicator.style.display = 'none';
+        }
+
+        // Função de teste para gráficos
+        function testCharts() {
+            console.log('=== TESTE DE GRÁFICOS ===');
+            console.log('Chart.js disponível:', typeof Chart !== 'undefined');
+            
+            const bedCanvas = document.getElementById('bed-occupancy-chart');
+            const consultCanvas = document.getElementById('consultations-chart');
+            
+            console.log('Canvas de leitos:', bedCanvas);
+            console.log('Canvas de consultas:', consultCanvas);
+            
+            if (typeof Chart !== 'undefined' && bedCanvas) {
+                try {
+                    // Destruir gráfico existente se houver
+                    if (window.bedTestChart) {
+                        window.bedTestChart.destroy();
+                    }
+                    
+                    // Criar novo gráfico de teste
+                    window.bedTestChart = new Chart(bedCanvas, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Teste'],
+                            datasets: [{
+                                data: [100],
+                                backgroundColor: ['#3b82f6']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                    
+                    alert('✅ Gráfico de teste criado com sucesso!');
+                    console.log('Gráfico de teste criado');
+                    
+                } catch (error) {
+                    alert('❌ Erro ao criar gráfico: ' + error.message);
+                    console.error('Erro:', error);
+                }
+            } else {
+                alert('❌ Chart.js não disponível ou canvas não encontrado');
+            }
+        }
+    </script>
+</body>
+</html> 

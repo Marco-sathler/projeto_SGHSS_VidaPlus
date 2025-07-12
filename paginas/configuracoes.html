@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - VidaPlus</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/components.css">
+    <link rel="stylesheet" href="../styles/responsive.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/button-icons.css">
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/notifications.css">
+    <link rel="stylesheet" href="../styles/filters.css">
+    <link rel="stylesheet" href="../styles/charts.css">
+    <link rel="stylesheet" href="../styles/chat.css">
+    <link rel="stylesheet" href="../styles/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .settings-page {
+            min-height: 100vh;
+            background: var(--light-gray);
+            /* padding-top: 90px; Removido o espaço para o navbar superior */
+        }
+        
+        .settings-header {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: var(--spacing-8) 0;
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .settings-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+        }
+        
+        .settings-header h1 {
+            font-size: var(--font-size-4xl);
+            margin-bottom: var(--spacing-2);
+        }
+        
+        .settings-header p {
+            font-size: var(--font-size-lg);
+            opacity: 0.9;
+        }
+        
+        .settings-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+        }
+        
+        .settings-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .settings-filters {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: var(--spacing-6);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .setting-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .setting-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .setting-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .setting-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: var(--font-size-2xl);
+            font-weight: 600;
+        }
+        
+        .setting-info h3 {
+            color: var(--gray-800);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-1);
+        }
+        
+        .setting-type {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: var(--spacing-1);
+        }
+        
+        .setting-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .status-indicator.active {
+            background: var(--success-color);
+        }
+        
+        .status-indicator.inactive {
+            background: var(--gray-400);
+        }
+        
+        .status-indicator.warning {
+            background: var(--warning-color);
+        }
+        
+        .setting-details {
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-2);
+            font-size: var(--font-size-sm);
+        }
+        
+        .detail-label {
+            color: var(--gray-600);
+        }
+        
+        .detail-value {
+            color: var(--gray-800);
+            font-weight: 500;
+        }
+        
+        .setting-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: var(--spacing-3);
+            background: var(--gray-50);
+            border-radius: 12px;
+        }
+        
+        .stat-number {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: var(--font-size-xs);
+            color: var(--gray-600);
+            text-transform: uppercase;
+        }
+        
+        .setting-actions {
+            display: flex;
+            gap: var(--spacing-2);
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: var(--spacing-2) var(--spacing-4);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-1);
+        }
+        
+        .action-btn.primary {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .action-btn.secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+        
+        .action-btn.success {
+            background: var(--success-color);
+            color: var(--white);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .add-setting-btn {
+            position: fixed;
+            bottom: var(--spacing-6);
+            right: var(--spacing-6);
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-4);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            z-index: 100;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .add-setting-btn:hover {
+            transform: translateY(-2px) scale(1.1);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-3) var(--spacing-3) var(--spacing-10);
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .filters select {
+            width: 100%;
+            padding: var(--spacing-3);
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+            background: var(--white);
+        }
+        
+        .filters select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="top-navbar" id="top-navbar">
+        <div class="nav-brand" onclick="window.location.href='dashboard.html'">
+            <div class="brand-logo">
+                <div class="v-plus">V+</div>
+            </div>
+            <div class="brand-text">
+                <h1>VidaPlus</h1>
+                <span>Sistema Hospitalar</span>
+            </div>
+        </div>
+
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-link" data-page="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            
+            <a href="pacientes.html" class="nav-link" data-page="pacientes">
+                <i class="fas fa-user-injured"></i>
+                <span>Pacientes</span>
+            </a>
+            
+            <a href="agendamento.html" class="nav-link" data-page="agendamento">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Agendamento</span>
+            </a>
+            
+            <a href="telemedicina.html" class="nav-link" data-page="telemedicina">
+                <i class="fas fa-video"></i>
+                <span>Telemedicina</span>
+            </a>
+            
+            <a href="profissionais.html" class="nav-link" data-page="profissionais">
+                <i class="fas fa-user-md"></i>
+                <span>Profissionais</span>
+            </a>
+            
+            <a href="leitos.html" class="nav-link" data-page="leitos">
+                <i class="fas fa-bed"></i>
+                <span>Leitos</span>
+            </a>
+            
+            <a href="relatorios.html" class="nav-link" data-page="relatorios">
+                <i class="fas fa-chart-line"></i>
+                <span>Relatórios</span>
+            </a>
+            
+            <a href="configuracoes.html" class="nav-link active" data-page="configuracoes">
+                <i class="fas fa-cog"></i>
+                <span>Configurações</span>
+            </a>
+        </div>
+
+        <div class="nav-actions">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" placeholder="Buscar...">
+            </div>
+            
+            <button class="action-btn" onclick="openModal('notificationsModal')">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </button>
+            
+            <button class="action-btn" onclick="openModal('infoModal')">
+                <i class="fas fa-question-circle"></i>
+            </button>
+            
+            <div class="user-profile" onclick="toggleUserMenu()">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h4>Dr. João Santos</h4>
+                    <p>Administrador</p>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Modal de Notificações -->
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Notificações</h3>
+                <button class="modal-close" onclick="closeModal('notificationsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Novo paciente cadastrado</h4>
+                        <p>Maria Silva foi cadastrada no sistema</p>
+                        <span class="notification-time">Há 5 minutos</span>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Consulta agendada</h4>
+                        <p>Consulta com Dr. João marcada para amanhã</p>
+                        <span class="notification-time">Há 15 minutos</span>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Leito disponível</h4>
+                        <p>Leito 205 foi liberado e está disponível</p>
+                        <span class="notification-time">Há 1 hora</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Informações -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Informações do Sistema</h3>
+                <button class="modal-close" onclick="closeModal('infoModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="info-section">
+                    <h4><i class="fas fa-info-circle"></i> Sobre o VidaPlus</h4>
+                    <p>Sistema hospitalar completo para gestão de pacientes, profissionais, leitos e agendamentos.</p>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-users"></i> Usuários Ativos</h4>
+                    <p>Atualmente há <strong>127</strong> usuários ativos no sistema.</p>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-hospital"></i> Estatísticas</h4>
+                    <ul>
+                        <li>Pacientes cadastrados: <strong>1.234</strong></li>
+                        <li>Profissionais: <strong>89</strong></li>
+                        <li>Leitos ocupados: <strong>156/200</strong></li>
+                        <li>Consultas hoje: <strong>45</strong></li>
+                    </ul>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-clock"></i> Última Atualização</h4>
+                    <p>Dados atualizados em: <strong>15/12/2025 às 14:30</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <h3>Menu</h3>
+                <button class="close-menu" onclick="closeMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="mobile-nav-menu">
+                <a href="dashboard.html" class="mobile-nav-link" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                
+                <a href="pacientes.html" class="mobile-nav-link" data-page="pacientes">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Pacientes</span>
+                </a>
+                
+                <a href="agendamento.html" class="mobile-nav-link" data-page="agendamento">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Agendamento</span>
+                </a>
+                
+                <a href="telemedicina.html" class="mobile-nav-link" data-page="telemedicina">
+                    <i class="fas fa-video"></i>
+                    <span>Telemedicina</span>
+                </a>
+                
+                <a href="profissionais.html" class="mobile-nav-link" data-page="profissionais">
+                    <i class="fas fa-user-md"></i>
+                    <span>Profissionais</span>
+                </a>
+                
+                <a href="leitos.html" class="mobile-nav-link" data-page="leitos">
+                    <i class="fas fa-bed"></i>
+                    <span>Leitos</span>
+                </a>
+                
+                <a href="relatorios.html" class="mobile-nav-link" data-page="relatorios">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Relatórios</span>
+                </a>
+                
+                <a href="configuracoes.html" class="mobile-nav-link active" data-page="configuracoes">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- User Menu Dropdown -->
+    <div class="user-menu" id="user-menu">
+        <a href="#" class="user-menu-item">
+            <i class="fas fa-user"></i>
+            <span>Meu Perfil</span>
+        </a>
+        <a href="#" class="user-menu-item">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Sair</span>
+        </a>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="settings-page page-transition">
+
+        <!-- Botão Adicionar Configuração -->
+        <button class="add-setting-btn" onclick="showAddSettingModal()">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <!-- Header -->
+        <header class="settings-header">
+            <div class="settings-header-content">
+                <h1><i class="fas fa-cog"></i> Configurações</h1>
+                <p>Gerencie as configurações do sistema VidaPlus</p>
+            </div>
+        </header>
+
+        <div class="settings-container">
+            <!-- Estatísticas -->
+            <div class="settings-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Configurações Ativas</h3>
+                        <p class="stat-number">45</p>
+                        <span class="stat-change positive">+5 este mês</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Usuários Configurados</h3>
+                        <p class="stat-number">128</p>
+                        <span class="stat-change positive">+12 este mês</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Segurança</h3>
+                        <p class="stat-number">100%</p>
+                        <span class="stat-change positive">Atualizada</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-sync"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Última Sincronização</h3>
+                        <p class="stat-number">2h</p>
+                        <span class="stat-change positive">Funcionando</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="settings-filters">
+                <div class="filters-grid">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar configurações...">
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="category-filter">
+                            <option value="">Todas as categorias</option>
+                            <option value="system">Sistema</option>
+                            <option value="user">Usuário</option>
+                            <option value="security">Segurança</option>
+                            <option value="notification">Notificações</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="status-filter">
+                            <option value="">Todos os status</option>
+                            <option value="active">Ativo</option>
+                            <option value="inactive">Inativo</option>
+                            <option value="warning">Atenção</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="sort-filter">
+                            <option value="name">Ordenar por Nome</option>
+                            <option value="category">Ordenar por Categoria</option>
+                            <option value="status">Ordenar por Status</option>
+                            <option value="date">Ordenar por Data</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Configurações -->
+            <div class="settings-grid">
+                <!-- Configuração 1 -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <div class="setting-avatar">SI</div>
+                        <div class="setting-info">
+                            <h3>Backup Automático</h3>
+                            <div class="setting-type">Sistema - Backup</div>
+                            <div class="setting-status">
+                                <div class="status-indicator active"></div>
+                                <span>Ativo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Frequência:</span>
+                            <span class="detail-value">Diário</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Horário:</span>
+                            <span class="detail-value">02:00</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Retenção:</span>
+                            <span class="detail-value">30 dias</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Último backup:</span>
+                            <span class="detail-value">15/12/2025 02:00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">30</div>
+                            <div class="stat-label">Backups</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2.5GB</div>
+                            <div class="stat-label">Tamanho</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Sucesso</div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-actions">
+                        <button class="action-btn primary" onclick="editSetting(1)">
+                            <i class="fas fa-edit" style="color: #3b82f6;"></i>
+                            Editar
+                        </button>
+                        <button class="action-btn secondary" onclick="viewSetting(1)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Detalhes
+                        </button>
+                        <button class="action-btn success" onclick="testSetting(1)">
+                            <i class="fas fa-play" style="color: #3b82f6;"></i>
+                            Testar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Configuração 2 -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <div class="setting-avatar">SE</div>
+                        <div class="setting-info">
+                            <h3>Autenticação Dupla</h3>
+                            <div class="setting-type">Segurança - Login</div>
+                            <div class="setting-status">
+                                <div class="status-indicator active"></div>
+                                <span>Ativo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Método:</span>
+                            <span class="detail-value">SMS + Email</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Tempo expiração:</span>
+                            <span class="detail-value">5 minutos</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Usuários ativos:</span>
+                            <span class="detail-value">89</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Última atualização:</span>
+                            <span class="detail-value">14/12/2025</span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">89</div>
+                            <div class="stat-label">Usuários</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">156</div>
+                            <div class="stat-label">Logins</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Falhas</div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-actions">
+                        <button class="action-btn primary" onclick="editSetting(2)">
+                            <i class="fas fa-edit" style="color: #3b82f6;"></i>
+                            Editar
+                        </button>
+                        <button class="action-btn secondary" onclick="viewSetting(2)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Detalhes
+                        </button>
+                        <button class="action-btn success" onclick="testSetting(2)">
+                            <i class="fas fa-play" style="color: #3b82f6;"></i>
+                            Testar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Configuração 3 -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <div class="setting-avatar">NO</div>
+                        <div class="setting-info">
+                            <h3>Notificações Push</h3>
+                            <div class="setting-type">Notificações - Sistema</div>
+                            <div class="setting-status">
+                                <div class="status-indicator warning"></div>
+                                <span>Atenção</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value">Configuração pendente</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Canais:</span>
+                            <span class="detail-value">Email, SMS</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Usuários inscritos:</span>
+                            <span class="detail-value">45</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Última verificação:</span>
+                            <span class="detail-value">13/12/2025</span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">45</div>
+                            <div class="stat-label">Inscritos</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">Canais</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">Pendente</div>
+                            <div class="stat-label">Status</div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-actions">
+                        <button class="action-btn primary" onclick="editSetting(3)">
+                            <i class="fas fa-edit" style="color: #3b82f6;"></i>
+                            Configurar
+                        </button>
+                        <button class="action-btn secondary" onclick="viewSetting(3)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Detalhes
+                        </button>
+                        <button class="action-btn success" onclick="testSetting(3)">
+                            <i class="fas fa-play" style="color: #3b82f6;"></i>
+                            Testar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Configuração 4 -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <div class="setting-avatar">US</div>
+                        <div class="setting-info">
+                            <h3>Perfis de Usuário</h3>
+                            <div class="setting-type">Usuário - Permissões</div>
+                            <div class="setting-status">
+                                <div class="status-indicator active"></div>
+                                <span>Ativo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Perfis ativos:</span>
+                            <span class="detail-value">8</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Usuários:</span>
+                            <span class="detail-value">128</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Permissões:</span>
+                            <span class="detail-value">24</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Última atualização:</span>
+                            <span class="detail-value">15/12/2025</span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Perfis</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">128</div>
+                            <div class="stat-label">Usuários</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">24</div>
+                            <div class="stat-label">Permissões</div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-actions">
+                        <button class="action-btn primary" onclick="editSetting(4)">
+                            <i class="fas fa-edit" style="color: #3b82f6;"></i>
+                            Editar
+                        </button>
+                        <button class="action-btn secondary" onclick="viewSetting(4)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Detalhes
+                        </button>
+                        <button class="action-btn success" onclick="testSetting(4)">
+                            <i class="fas fa-play" style="color: #3b82f6;"></i>
+                            Testar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Configuração 5 -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <div class="setting-avatar">SY</div>
+                        <div class="setting-info">
+                            <h3>Integração API</h3>
+                            <div class="setting-type">Sistema - Integração</div>
+                            <div class="setting-status">
+                                <div class="status-indicator inactive"></div>
+                                <span>Inativo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value">Desabilitado</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">APIs configuradas:</span>
+                            <span class="detail-value">0</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Última conexão:</span>
+                            <span class="detail-value">Nunca</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Configuração:</span>
+                            <span class="detail-value">Pendente</span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">APIs</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Conexões</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">Inativo</div>
+                            <div class="stat-label">Status</div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-actions">
+                        <button class="action-btn primary" onclick="editSetting(5)">
+                            <i class="fas fa-edit"></i>
+                            Configurar
+                        </button>
+                        <button class="action-btn secondary" onclick="viewSetting(5)">
+                            <i class="fas fa-eye"></i>
+                            Detalhes
+                        </button>
+                        <button class="action-btn success" onclick="testSetting(5)">
+                            <i class="fas fa-play"></i>
+                            Testar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div> <!-- Fechamento da main-content -->
+
+        <!-- Scripts -->
+    <script src="../js/navbar.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/enhanced-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/animations.js"></script>
+
+    <script>
+        // Funções para interação
+        function showAddSettingModal() {
+            alert('Modal de adicionar configuração seria aberto aqui');
+        }
+        
+        function editSetting(id) {
+            alert(`Editando configuração ID: ${id}`);
+        }
+        
+        function viewSetting(id) {
+            alert(`Visualizando configuração ID: ${id}`);
+        }
+        
+        function testSetting(id) {
+            alert(`Testando configuração ID: ${id}`);
+        }
+        
+        // Filtros
+        document.getElementById('category-filter').addEventListener('change', function() {
+            console.log('Filtro de categoria:', this.value);
+        });
+        
+        document.getElementById('status-filter').addEventListener('change', function() {
+            console.log('Filtro de status:', this.value);
+        });
+        
+        document.getElementById('sort-filter').addEventListener('change', function() {
+            console.log('Ordenação:', this.value);
+        });
+        
+        // Busca
+        document.querySelector('.search-box input').addEventListener('input', function() {
+            console.log('Busca:', this.value);
+        });
+    </script>
+</body>
+</html> 

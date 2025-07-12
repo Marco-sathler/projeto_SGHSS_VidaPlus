@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacientes - VidaPlus</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/components.css">
+    <link rel="stylesheet" href="../styles/responsive.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/button-icons.css">
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/notifications.css">
+    <link rel="stylesheet" href="../styles/filters.css">
+    <link rel="stylesheet" href="../styles/charts.css">
+    <link rel="stylesheet" href="../styles/chat.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .patients-page {
+            min-height: 100vh;
+            background: var(--light-gray);
+            /* padding-top: 90px; Removido o espaço para o navbar superior */
+        }
+        
+        .patients-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            padding: var(--spacing-8) 0;
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .patients-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+        }
+        
+        .patients-header h1 {
+            font-size: var(--font-size-4xl);
+            margin-bottom: var(--spacing-2);
+        }
+        
+        .patients-header p {
+            font-size: var(--font-size-lg);
+            opacity: 0.9;
+        }
+        
+        .patients-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+        }
+        
+        .patients-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .patients-filters {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+        }
+        
+        .patients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: var(--spacing-6);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .patient-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .patient-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .patient-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .patient-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: var(--font-size-2xl);
+            font-weight: 600;
+        }
+        
+        .patient-info h3 {
+            color: var(--gray-800);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-1);
+        }
+        
+        .patient-type {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: var(--spacing-1);
+        }
+        
+        .patient-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .status-indicator.active {
+            background: var(--success-color);
+        }
+        
+        .status-indicator.inactive {
+            background: var(--gray-400);
+        }
+        
+        .status-indicator.warning {
+            background: var(--warning-color);
+        }
+        
+        .patient-details {
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-2);
+            font-size: var(--font-size-sm);
+        }
+        
+        .detail-label {
+            color: var(--gray-600);
+        }
+        
+        .detail-value {
+            color: var(--gray-800);
+            font-weight: 500;
+        }
+        
+        .patient-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: var(--spacing-3);
+            background: var(--gray-50);
+            border-radius: 12px;
+        }
+        
+        .stat-number {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: var(--font-size-xs);
+            color: var(--gray-600);
+            text-transform: uppercase;
+        }
+        
+        .patient-actions {
+            display: flex;
+            gap: var(--spacing-2);
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: var(--spacing-2) var(--spacing-4);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-1);
+        }
+        
+        .action-btn.primary {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .action-btn.secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+        
+        .action-btn.success {
+            background: var(--success-color);
+            color: var(--white);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .add-patient-btn {
+            position: fixed;
+            bottom: var(--spacing-6);
+            right: var(--spacing-6);
+            background: linear-gradient(135deg, var(--success-color), #27AE60);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-4);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            z-index: 100;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .add-patient-btn:hover {
+            transform: translateY(-2px) scale(1.1);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-3) var(--spacing-3) var(--spacing-10);
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .filters select {
+            width: 100%;
+            padding: var(--spacing-3);
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+            background: var(--white);
+        }
+        
+        .filters select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="top-navbar" id="top-navbar">
+        <div class="nav-brand" onclick="window.location.href='dashboard.html'">
+            <div class="brand-logo">
+                <div class="v-plus">V+</div>
+            </div>
+            <div class="brand-text">
+                <h1>VidaPlus</h1>
+                <span>Sistema Hospitalar</span>
+            </div>
+        </div>
+
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-link" data-page="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            
+            <a href="pacientes.html" class="nav-link active" data-page="pacientes">
+                <i class="fas fa-user-injured"></i>
+                <span>Pacientes</span>
+            </a>
+            
+            <a href="agendamento.html" class="nav-link" data-page="agendamento">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Agendamento</span>
+            </a>
+            
+            <a href="telemedicina.html" class="nav-link" data-page="telemedicina">
+                <i class="fas fa-video"></i>
+                <span>Telemedicina</span>
+            </a>
+            
+            <a href="profissionais.html" class="nav-link" data-page="profissionais">
+                <i class="fas fa-user-md"></i>
+                <span>Profissionais</span>
+            </a>
+            
+            <a href="leitos.html" class="nav-link" data-page="leitos">
+                <i class="fas fa-bed"></i>
+                <span>Leitos</span>
+            </a>
+            
+            <a href="relatorios.html" class="nav-link" data-page="relatorios">
+                <i class="fas fa-chart-line"></i>
+                <span>Relatórios</span>
+            </a>
+            
+            <a href="configuracoes.html" class="nav-link" data-page="configuracoes">
+                <i class="fas fa-cog"></i>
+                <span>Configurações</span>
+            </a>
+        </div>
+
+        <div class="nav-actions">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" placeholder="Buscar...">
+            </div>
+            
+            <button class="action-btn" onclick="openModal('notificationsModal')">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </button>
+            
+            <button class="action-btn" onclick="openModal('infoModal')">
+                <i class="fas fa-question-circle"></i>
+            </button>
+            
+            <div class="user-profile" onclick="toggleUserMenu()">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h4>Dr. João Santos</h4>
+                    <p>Administrador</p>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+                
+                <!-- User Menu Dropdown -->
+                <div class="user-menu" id="user-menu">
+                    <a href="#" class="user-menu-item">
+                        <i class="fas fa-user"></i>
+                        <span>Meu Perfil</span>
+                    </a>
+                    <a href="#" class="user-menu-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </a>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Modal de Notificações -->
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Notificações</h3>
+                <button class="modal-close" onclick="closeModal('notificationsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Novo paciente cadastrado</h4>
+                        <p>Maria Silva foi cadastrada no sistema</p>
+                        <span class="notification-time">Há 5 minutos</span>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Consulta agendada</h4>
+                        <p>Consulta com Dr. João marcada para amanhã</p>
+                        <span class="notification-time">Há 15 minutos</span>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Leito disponível</h4>
+                        <p>Leito 205 foi liberado e está disponível</p>
+                        <span class="notification-time">Há 1 hora</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Informações -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Informações do Sistema</h3>
+                <button class="modal-close" onclick="closeModal('infoModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="info-section">
+                    <h4><i class="fas fa-info-circle"></i> Sobre o VidaPlus</h4>
+                    <p>Sistema hospitalar completo para gestão de pacientes, profissionais, leitos e agendamentos.</p>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-users"></i> Usuários Ativos</h4>
+                    <p>Atualmente há <strong>127</strong> usuários ativos no sistema.</p>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-hospital"></i> Estatísticas</h4>
+                    <ul>
+                        <li>Pacientes cadastrados: <strong>1.234</strong></li>
+                        <li>Profissionais: <strong>89</strong></li>
+                        <li>Leitos ocupados: <strong>156/200</strong></li>
+                        <li>Consultas hoje: <strong>45</strong></li>
+                    </ul>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-clock"></i> Última Atualização</h4>
+                    <p>Dados atualizados em: <strong>15/12/2025 às 14:30</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <h3>Menu</h3>
+                <button class="close-menu" onclick="closeMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="mobile-nav-menu">
+                <a href="dashboard.html" class="mobile-nav-link" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                
+                <a href="pacientes.html" class="mobile-nav-link active" data-page="pacientes">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Pacientes</span>
+                </a>
+                
+                <a href="agendamento.html" class="mobile-nav-link" data-page="agendamento">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Agendamento</span>
+                </a>
+                
+                <a href="telemedicina.html" class="mobile-nav-link" data-page="telemedicina">
+                    <i class="fas fa-video"></i>
+                    <span>Telemedicina</span>
+                </a>
+                
+                <a href="profissionais.html" class="mobile-nav-link" data-page="profissionais">
+                    <i class="fas fa-user-md"></i>
+                    <span>Profissionais</span>
+                </a>
+                
+                <a href="leitos.html" class="mobile-nav-link" data-page="leitos">
+                    <i class="fas fa-bed"></i>
+                    <span>Leitos</span>
+                </a>
+                
+                <a href="relatorios.html" class="mobile-nav-link" data-page="relatorios">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Relatórios</span>
+                </a>
+                
+                <a href="configuracoes.html" class="mobile-nav-link" data-page="configuracoes">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="patients-page page-transition">
+
+        <!-- Botão Adicionar -->
+        <button class="add-patient-btn" onclick="showAddPatientModal()">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <!-- Header -->
+        <header class="patients-header">
+            <div class="patients-header-content">
+                <h1><i class="fas fa-user-injured"></i> Pacientes</h1>
+                <p>Gerencie o cadastro e histórico dos pacientes</p>
+            </div>
+        </header>
+
+        <div class="patients-container">
+            <!-- Estatísticas -->
+            <div class="patients-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-injured"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Total de Pacientes</h3>
+                        <p class="stat-number">1,247</p>
+                        <span class="stat-change positive">+23 este mês</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Pacientes Ativos</h3>
+                        <p class="stat-number">1,156</p>
+                        <span class="stat-change positive">92% ativos</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Consultas Hoje</h3>
+                        <p class="stat-number">89</p>
+                        <span class="stat-change positive">+15% vs ontem</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Emergências</h3>
+                        <p class="stat-number">3</p>
+                        <span class="stat-change negative">-2 vs ontem</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="patients-filters">
+                <div class="filters-grid">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar pacientes por nome ou ID...">
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="status-filter">
+                            <option value="">Todos os status</option>
+                            <option value="active">Ativo</option>
+                            <option value="inactive">Inativo</option>
+                            <option value="emergency">Emergência</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="age-filter">
+                            <option value="">Todas as idades</option>
+                            <option value="child">Criança (0-12)</option>
+                            <option value="teen">Adolescente (13-17)</option>
+                            <option value="adult">Adulto (18-65)</option>
+                            <option value="elderly">Idoso (65+)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="sort-filter">
+                            <option value="name">Ordenar por Nome</option>
+                            <option value="id">Ordenar por ID</option>
+                            <option value="last-visit">Última Visita</option>
+                            <option value="status">Status</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Pacientes -->
+            <div class="patients-grid">
+                <!-- Paciente 1 -->
+                <div class="patient-card">
+                    <div class="patient-header">
+                        <div class="patient-avatar">MS</div>
+                        <div class="patient-info">
+                            <h3>Maria Silva Santos</h3>
+                            <div class="patient-id">ID: P001234</div>
+                            <div class="patient-status">
+                                <div class="status-indicator active"></div>
+                                <span>Ativo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Idade:</span>
+                            <span class="detail-value">34 anos</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Telefone:</span>
+                            <span class="detail-value">(11) 99999-9999</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">maria.silva@email.com</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Última visita:</span>
+                            <span class="detail-value">15/12/2025</span>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">Consultas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">Exames</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">Especialistas</div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-actions">
+                        <button class="action-btn primary" onclick="viewPatient(1)">
+                            <i class="fas fa-eye"></i>
+                            Perfil
+                        </button>
+                        <button class="action-btn secondary" onclick="scheduleAppointment(1)">
+                            <i class="fas fa-calendar-plus"></i>
+                            Agendar
+                        </button>
+                        <button class="action-btn success" onclick="viewHistory(1)">
+                            <i class="fas fa-history"></i>
+                            Histórico
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Paciente 2 -->
+                <div class="patient-card">
+                    <div class="patient-header">
+                        <div class="patient-avatar">JP</div>
+                        <div class="patient-info">
+                            <h3>João Pedro Oliveira</h3>
+                            <div class="patient-id">ID: P001235</div>
+                            <div class="patient-status">
+                                <div class="status-indicator active"></div>
+                                <span>Ativo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Idade:</span>
+                            <span class="detail-value">28 anos</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Telefone:</span>
+                            <span class="detail-value">(11) 88888-8888</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">joao.pedro@email.com</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Última visita:</span>
+                            <span class="detail-value">12/12/2025</span>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Consultas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">Exames</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1</div>
+                            <div class="stat-label">Especialista</div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-actions">
+                        <button class="action-btn primary" onclick="viewPatient(2)">
+                            <i class="fas fa-eye"></i>
+                            Perfil
+                        </button>
+                        <button class="action-btn secondary" onclick="scheduleAppointment(2)">
+                            <i class="fas fa-calendar-plus"></i>
+                            Agendar
+                        </button>
+                        <button class="action-btn success" onclick="viewHistory(2)">
+                            <i class="fas fa-history"></i>
+                            Histórico
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Paciente 3 -->
+                <div class="patient-card">
+                    <div class="patient-header">
+                        <div class="patient-avatar">AC</div>
+                        <div class="patient-info">
+                            <h3>Ana Costa Ferreira</h3>
+                            <div class="patient-id">ID: P001236</div>
+                            <div class="patient-status">
+                                <div class="status-indicator emergency"></div>
+                                <span>Emergência</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Idade:</span>
+                            <span class="detail-value">45 anos</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Telefone:</span>
+                            <span class="detail-value">(11) 77777-7777</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">ana.costa@email.com</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Última visita:</span>
+                            <span class="detail-value">Hoje</span>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">25</div>
+                            <div class="stat-label">Consultas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Exames</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">4</div>
+                            <div class="stat-label">Especialistas</div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-actions">
+                        <button class="action-btn primary" onclick="viewPatient(3)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Perfil
+                        </button>
+                        <button class="action-btn secondary" onclick="scheduleAppointment(3)">
+                            <i class="fas fa-calendar-plus" style="color: #3b82f6;"></i>
+                            Agendar
+                        </button>
+                        <button class="action-btn success" onclick="viewHistory(3)">
+                            <i class="fas fa-history" style="color: #3b82f6;"></i>
+                            Histórico
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Paciente 4 -->
+                <div class="patient-card">
+                    <div class="patient-header">
+                        <div class="patient-avatar">PS</div>
+                        <div class="patient-info">
+                            <h3>Pedro Almeida Santos</h3>
+                            <div class="patient-id">ID: P001237</div>
+                            <div class="patient-status">
+                                <div class="status-indicator active"></div>
+                                <span>Ativo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Idade:</span>
+                            <span class="detail-value">52 anos</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Telefone:</span>
+                            <span class="detail-value">(11) 66666-6666</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">pedro.almeida@email.com</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Última visita:</span>
+                            <span class="detail-value">10/12/2025</span>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">18</div>
+                            <div class="stat-label">Consultas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">Exames</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">Especialistas</div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-actions">
+                        <button class="action-btn primary" onclick="viewPatient(4)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Perfil
+                        </button>
+                        <button class="action-btn secondary" onclick="scheduleAppointment(4)">
+                            <i class="fas fa-calendar-plus" style="color: #3b82f6;"></i>
+                            Agendar
+                        </button>
+                        <button class="action-btn success" onclick="viewHistory(4)">
+                            <i class="fas fa-history" style="color: #3b82f6;"></i>
+                            Histórico
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Paciente 5 -->
+                <div class="patient-card">
+                    <div class="patient-header">
+                        <div class="patient-avatar">LF</div>
+                        <div class="patient-info">
+                            <h3>Lucia Ferreira Lima</h3>
+                            <div class="patient-id">ID: P001238</div>
+                            <div class="patient-status">
+                                <div class="status-indicator active"></div>
+                                <span>Ativo</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Idade:</span>
+                            <span class="detail-value">38 anos</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Telefone:</span>
+                            <span class="detail-value">(11) 55555-5555</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">lucia.ferreira@email.com</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Última visita:</span>
+                            <span class="detail-value">08/12/2025</span>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">15</div>
+                            <div class="stat-label">Consultas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">4</div>
+                            <div class="stat-label">Exames</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">Especialistas</div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-actions">
+                        <button class="action-btn primary" onclick="viewPatient(5)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Perfil
+                        </button>
+                        <button class="action-btn secondary" onclick="scheduleAppointment(5)">
+                            <i class="fas fa-calendar-plus" style="color: #3b82f6;"></i>
+                            Agendar
+                        </button>
+                        <button class="action-btn success" onclick="viewHistory(5)">
+                            <i class="fas fa-history" style="color: #3b82f6;"></i>
+                            Histórico
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div> <!-- Fechamento da main-content -->
+
+    <!-- Scripts -->
+    <script src="../js/navbar.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/enhanced-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="../js/animations.js"></script>
+    <script>
+        // Funções para interação
+        function showAddPatientModal() {
+            alert('Modal de adicionar paciente seria aberto aqui');
+        }
+        
+        function viewPatient(id) {
+            alert(`Visualizando perfil do paciente ID: ${id}`);
+        }
+        
+        function scheduleAppointment(id) {
+            alert(`Abrindo agenda para agendar consulta com paciente ID: ${id}`);
+            window.location.href = 'agendamento.html';
+        }
+        
+        function viewHistory(id) {
+            alert(`Visualizando histórico do paciente ID: ${id}`);
+        }
+        
+        // Filtros
+        document.getElementById('status-filter').addEventListener('change', function() {
+            console.log('Filtro de status:', this.value);
+        });
+        
+        document.getElementById('age-filter').addEventListener('change', function() {
+            console.log('Filtro de idade:', this.value);
+        });
+        
+        document.getElementById('sort-filter').addEventListener('change', function() {
+            console.log('Ordenação:', this.value);
+        });
+        
+        // Busca
+        document.querySelector('.search-box input').addEventListener('input', function() {
+            console.log('Busca:', this.value);
+        });
+    </script>
+</body>
+</html> 

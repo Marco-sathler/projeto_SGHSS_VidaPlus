@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profissionais - VidaPlus</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/components.css">
+    <link rel="stylesheet" href="../styles/responsive.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/button-icons.css">
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/notifications.css">
+    <link rel="stylesheet" href="../styles/filters.css">
+    <link rel="stylesheet" href="../styles/charts.css">
+    <link rel="stylesheet" href="../styles/chat.css">
+    <link rel="stylesheet" href="../styles/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .professionals-page {
+            min-height: 100vh;
+            background: var(--light-gray);
+            /* padding-top: 90px; Removido o espaço para o navbar superior */
+        }
+        
+        .professionals-header {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: var(--spacing-8) 0;
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .professionals-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+        }
+        
+        .professionals-header h1 {
+            font-size: var(--font-size-4xl);
+            margin-bottom: var(--spacing-2);
+        }
+        
+        .professionals-header p {
+            font-size: var(--font-size-lg);
+            opacity: 0.9;
+        }
+        
+        .professionals-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+        }
+        
+        .professionals-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .professionals-filters {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+        }
+        
+        .professionals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: var(--spacing-6);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .professional-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .professional-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .professional-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .professional-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: var(--font-size-2xl);
+            font-weight: 600;
+        }
+        
+        .professional-info h3 {
+            color: var(--gray-800);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-1);
+        }
+        
+        .professional-specialty {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: var(--spacing-1);
+        }
+        
+        .professional-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .status-indicator.active {
+            background: var(--success-color);
+        }
+        
+        .status-indicator.inactive {
+            background: var(--gray-400);
+        }
+        
+        .status-indicator.vacation {
+            background: var(--warning-color);
+        }
+        
+        .professional-details {
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-2);
+            font-size: var(--font-size-sm);
+        }
+        
+        .detail-label {
+            color: var(--gray-600);
+        }
+        
+        .detail-value {
+            color: var(--gray-800);
+            font-weight: 500;
+        }
+        
+        .professional-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: var(--spacing-3);
+            background: var(--gray-50);
+            border-radius: 12px;
+        }
+        
+        .stat-number {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: var(--font-size-xs);
+            color: var(--gray-600);
+            text-transform: uppercase;
+        }
+        
+        .professional-actions {
+            display: flex;
+            gap: var(--spacing-2);
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: var(--spacing-2) var(--spacing-4);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-1);
+        }
+        
+        .action-btn.primary {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .action-btn.secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+        
+        .action-btn.success {
+            background: var(--success-color);
+            color: var(--white);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .schedule-section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .schedule-header h2 {
+            color: var(--gray-800);
+            font-size: var(--font-size-xl);
+        }
+        
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+        }
+        
+        .schedule-item {
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            padding: var(--spacing-4);
+            transition: all var(--transition-normal);
+        }
+        
+        .schedule-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .schedule-time {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-2);
+        }
+        
+        .schedule-patient {
+            color: var(--gray-700);
+            font-size: var(--font-size-sm);
+        }
+        
+        .back-btn {
+            position: fixed;
+            top: var(--spacing-6);
+            left: var(--spacing-6);
+            background: var(--white);
+            border: none;
+            padding: var(--spacing-3);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            z-index: 100;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .add-professional-btn {
+            position: fixed;
+            bottom: var(--spacing-6);
+            right: var(--spacing-6);
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-4);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            z-index: 100;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .add-professional-btn:hover {
+            transform: translateY(-2px) scale(1.1);
+        }
+        
+        .specialty-badge {
+            display: inline-block;
+            padding: var(--spacing-1) var(--spacing-2);
+            background: var(--primary-light);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            margin-right: var(--spacing-1);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-3) var(--spacing-3) var(--spacing-10);
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .filters select {
+            width: 100%;
+            padding: var(--spacing-3);
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+            background: var(--white);
+        }
+        
+        .filters select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="top-navbar" id="top-navbar">
+        <div class="nav-brand" onclick="window.location.href='dashboard.html'">
+            <div class="brand-logo">
+                <div class="v-plus">V+</div>
+            </div>
+            <div class="brand-text">
+                <h1>VidaPlus</h1>
+                <span>Sistema Hospitalar</span>
+            </div>
+        </div>
+
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-link" data-page="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            
+            <a href="pacientes.html" class="nav-link" data-page="pacientes">
+                <i class="fas fa-user-injured"></i>
+                <span>Pacientes</span>
+            </a>
+            
+            <a href="agendamento.html" class="nav-link" data-page="agendamento">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Agendamento</span>
+            </a>
+            
+            <a href="telemedicina.html" class="nav-link" data-page="telemedicina">
+                <i class="fas fa-video"></i>
+                <span>Telemedicina</span>
+            </a>
+            
+            <a href="profissionais.html" class="nav-link active" data-page="profissionais">
+                <i class="fas fa-user-md"></i>
+                <span>Profissionais</span>
+            </a>
+            
+            <a href="leitos.html" class="nav-link" data-page="leitos">
+                <i class="fas fa-bed"></i>
+                <span>Leitos</span>
+            </a>
+            
+            <a href="relatorios.html" class="nav-link" data-page="relatorios">
+                <i class="fas fa-chart-line"></i>
+                <span>Relatórios</span>
+            </a>
+            
+            <a href="configuracoes.html" class="nav-link" data-page="configuracoes">
+                <i class="fas fa-cog"></i>
+                <span>Configurações</span>
+            </a>
+        </div>
+
+        <div class="nav-actions">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" placeholder="Buscar...">
+            </div>
+            
+            <button class="action-btn" onclick="openModal('notificationsModal')">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </button>
+            
+            <button class="action-btn" onclick="openModal('infoModal')">
+                <i class="fas fa-question-circle"></i>
+            </button>
+            
+            <div class="user-profile" onclick="toggleUserMenu()">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h4>Dr. João Santos</h4>
+                    <p>Administrador</p>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Modal de Notificações -->
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Notificações</h3>
+                <button class="modal-close" onclick="closeModal('notificationsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Novo paciente cadastrado</h4>
+                        <p>Maria Silva foi cadastrada no sistema</p>
+                        <span class="notification-time">Há 5 minutos</span>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Consulta agendada</h4>
+                        <p>Consulta com Dr. João marcada para amanhã</p>
+                        <span class="notification-time">Há 15 minutos</span>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Leito disponível</h4>
+                        <p>Leito 205 foi liberado e está disponível</p>
+                        <span class="notification-time">Há 1 hora</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Informações -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Informações do Sistema</h3>
+                <button class="modal-close" onclick="closeModal('infoModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="info-section">
+                    <h4><i class="fas fa-info-circle"></i> Sobre o VidaPlus</h4>
+                    <p>Sistema hospitalar completo para gestão de pacientes, profissionais, leitos e agendamentos.</p>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-users"></i> Usuários Ativos</h4>
+                    <p>Atualmente há <strong>127</strong> usuários ativos no sistema.</p>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-hospital"></i> Estatísticas</h4>
+                    <ul>
+                        <li>Pacientes cadastrados: <strong>1.234</strong></li>
+                        <li>Profissionais: <strong>89</strong></li>
+                        <li>Leitos ocupados: <strong>156/200</strong></li>
+                        <li>Consultas hoje: <strong>45</strong></li>
+                    </ul>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-clock"></i> Última Atualização</h4>
+                    <p>Dados atualizados em: <strong>15/12/2025 às 14:30</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <h3>Menu</h3>
+                <button class="close-menu" onclick="closeMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="mobile-nav-menu">
+                <a href="dashboard.html" class="mobile-nav-link" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                
+                <a href="pacientes.html" class="mobile-nav-link" data-page="pacientes">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Pacientes</span>
+                </a>
+                
+                <a href="agendamento.html" class="mobile-nav-link" data-page="agendamento">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Agendamento</span>
+                </a>
+                
+                <a href="telemedicina.html" class="mobile-nav-link" data-page="telemedicina">
+                    <i class="fas fa-video"></i>
+                    <span>Telemedicina</span>
+                </a>
+                
+                <a href="profissionais.html" class="mobile-nav-link active" data-page="profissionais">
+                    <i class="fas fa-user-md"></i>
+                    <span>Profissionais</span>
+                </a>
+                
+                <a href="leitos.html" class="mobile-nav-link" data-page="leitos">
+                    <i class="fas fa-bed"></i>
+                    <span>Leitos</span>
+                </a>
+                
+                <a href="relatorios.html" class="mobile-nav-link" data-page="relatorios">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Relatórios</span>
+                </a>
+                
+                <a href="configuracoes.html" class="mobile-nav-link" data-page="configuracoes">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- User Menu Dropdown -->
+    <div class="user-menu" id="user-menu">
+        <a href="#" class="user-menu-item">
+            <i class="fas fa-user"></i>
+            <span>Meu Perfil</span>
+        </a>
+        <a href="#" class="user-menu-item">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Sair</span>
+        </a>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="professionals-page page-transition">
+
+        <!-- Botão Adicionar -->
+        <button class="add-professional-btn" onclick="showAddProfessionalModal()">
+            <i class="fas fa-plus" style="color: #3b82f6;"></i>
+        </button>
+
+        <!-- Header -->
+        <header class="professionals-header">
+            <div class="professionals-header-content">
+                <h1><i class="fas fa-user-md"></i> Profissionais</h1>
+                <p>Gerencie a equipe médica e profissionais de saúde</p>
+            </div>
+        </header>
+
+        <div class="professionals-container">
+            <!-- Estatísticas -->
+            <div class="professionals-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Total de Profissionais</h3>
+                        <p class="stat-number">47</p>
+                        <span class="stat-change positive">+3 este mês</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Profissionais Ativos</h3>
+                        <p class="stat-number">42</p>
+                        <span class="stat-change positive">89% disponível</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Consultas Hoje</h3>
+                        <p class="stat-number">156</p>
+                        <span class="stat-change positive">+12% vs ontem</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Avaliação Média</h3>
+                        <p class="stat-number">4.8</p>
+                        <span class="stat-change positive">+0.2 este mês</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="professionals-filters">
+                <div class="filters-grid">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar profissionais por nome ou especialidade...">
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="specialty-filter">
+                            <option value="">Todas as especialidades</option>
+                            <option value="cardiologia">Cardiologia</option>
+                            <option value="dermatologia">Dermatologia</option>
+                            <option value="ortopedia">Ortopedia</option>
+                            <option value="pediatria">Pediatria</option>
+                            <option value="neurologia">Neurologia</option>
+                            <option value="psiquiatria">Psiquiatria</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="status-filter">
+                            <option value="">Todos os status</option>
+                            <option value="online">Online</option>
+                            <option value="offline">Offline</option>
+                            <option value="busy">Ocupado</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="sort-filter">
+                            <option value="name">Ordenar por Nome</option>
+                            <option value="specialty">Ordenar por Especialidade</option>
+                            <option value="rating">Ordenar por Avaliação</option>
+                            <option value="consultations">Ordenar por Consultas</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Profissionais -->
+            <div class="professionals-grid">
+                <!-- Profissional 1 -->
+                <div class="professional-card">
+                    <div class="professional-header">
+                        <div class="professional-avatar">JS</div>
+                        <div class="professional-info">
+                            <h3>Dr. João Santos</h3>
+                            <div class="professional-specialty">Cardiologia</div>
+                            <div class="professional-status">
+                                <div class="status-indicator active"></div>
+                                <span>Online</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-details">
+                        <div class="detail-row">
+                            <span class="detail-label">CRM:</span>
+                            <span class="detail-value">12345-SP</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">joao.santos@vidaplus.com</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Telefone:</span>
+                            <span class="detail-value">(11) 99999-9999</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Experiência:</span>
+                            <span class="detail-value">15 anos</span>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">4.9</div>
+                            <div class="stat-label">Avaliação</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">156</div>
+                            <div class="stat-label">Consultas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">Pacientes</div>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-actions">
+                        <button class="action-btn primary" onclick="viewProfessional(1)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Perfil
+                        </button>
+                        <button class="action-btn secondary" onclick="scheduleWithProfessional(1)">
+                            <i class="fas fa-calendar-plus" style="color: #3b82f6;"></i>
+                            Agendar
+                        </button>
+                        <button class="action-btn success" onclick="startTelemedicine(1)">
+                            <i class="fas fa-video" style="color: #3b82f6;"></i>
+                            Telemedicina
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profissional 2 -->
+                <div class="professional-card">
+                    <div class="professional-header">
+                        <div class="professional-avatar">AC</div>
+                        <div class="professional-info">
+                            <h3>Dra. Ana Costa</h3>
+                            <div class="professional-specialty">Dermatologia</div>
+                            <div class="professional-status">
+                                <div class="status-indicator busy"></div>
+                                <span>Ocupada</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-details">
+                        <div class="detail-row">
+                            <span class="detail-label">CRM:</span>
+                            <span class="detail-value">54321-SP</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">ana.costa@vidaplus.com</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Telefone:</span>
+                            <span class="detail-value">(11) 88888-8888</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Experiência:</span>
+                            <span class="detail-value">8 anos</span>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">4.7</div>
+                            <div class="stat-label">Avaliação</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">89</div>
+                            <div class="stat-label">Consultas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Pacientes</div>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-actions">
+                        <button class="action-btn primary" onclick="viewProfessional(2)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Perfil
+                        </button>
+                        <button class="action-btn secondary" onclick="scheduleWithProfessional(2)">
+                            <i class="fas fa-calendar-plus" style="color: #3b82f6;"></i>
+                            Agendar
+                        </button>
+                        <button class="action-btn success" onclick="startTelemedicine(2)">
+                            <i class="fas fa-video" style="color: #3b82f6;"></i>
+                            Telemedicina
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profissional 3 -->
+                <div class="professional-card">
+                    <div class="professional-header">
+                        <div class="professional-avatar">CL</div>
+                        <div class="professional-info">
+                            <h3>Dr. Carlos Lima</h3>
+                            <div class="professional-specialty">Ortopedia</div>
+                            <div class="professional-status">
+                                <div class="status-indicator active"></div>
+                                <span>Online</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-details">
+                        <div class="detail-row">
+                            <span class="detail-label">CRM:</span>
+                            <span class="detail-value">98765-SP</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">carlos.lima@vidaplus.com</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Telefone:</span>
+                            <span class="detail-value">(11) 77777-7777</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Experiência:</span>
+                            <span class="detail-value">12 anos</span>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">4.8</div>
+                            <div class="stat-label">Avaliação</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">134</div>
+                            <div class="stat-label">Consultas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">10</div>
+                            <div class="stat-label">Pacientes</div>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-actions">
+                        <button class="action-btn primary" onclick="viewProfessional(3)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Perfil
+                        </button>
+                        <button class="action-btn secondary" onclick="scheduleWithProfessional(3)">
+                            <i class="fas fa-calendar-plus" style="color: #3b82f6;"></i>
+                            Agendar
+                        </button>
+                        <button class="action-btn success" onclick="startTelemedicine(3)">
+                            <i class="fas fa-video" style="color: #3b82f6;"></i>
+                            Telemedicina
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profissional 4 -->
+                <div class="professional-card">
+                    <div class="professional-header">
+                        <div class="professional-avatar">MS</div>
+                        <div class="professional-info">
+                            <h3>Dra. Mariana Silva</h3>
+                            <div class="professional-specialty">Pediatria</div>
+                            <div class="professional-status">
+                                <div class="status-indicator inactive"></div>
+                                <span>Offline</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-details">
+                        <div class="detail-row">
+                            <span class="detail-label">CRM:</span>
+                            <span class="detail-value">11111-SP</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">mariana.silva@vidaplus.com</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Telefone:</span>
+                            <span class="detail-value">(11) 66666-6666</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Experiência:</span>
+                            <span class="detail-value">6 anos</span>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">4.9</div>
+                            <div class="stat-label">Avaliação</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">98</div>
+                            <div class="stat-label">Consultas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">15</div>
+                            <div class="stat-label">Pacientes</div>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-actions">
+                        <button class="action-btn primary" onclick="viewProfessional(4)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Perfil
+                        </button>
+                        <button class="action-btn secondary" onclick="scheduleWithProfessional(4)">
+                            <i class="fas fa-calendar-plus" style="color: #3b82f6;"></i>
+                            Agendar
+                        </button>
+                        <button class="action-btn secondary" onclick="sendMessage(4)">
+                            <i class="fas fa-envelope" style="color: #3b82f6;"></i>
+                            Mensagem
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profissional 5 -->
+                <div class="professional-card">
+                    <div class="professional-header">
+                        <div class="professional-avatar">RA</div>
+                        <div class="professional-info">
+                            <h3>Dr. Roberto Alves</h3>
+                            <div class="professional-specialty">Neurologia</div>
+                            <div class="professional-status">
+                                <div class="status-indicator active"></div>
+                                <span>Online</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-details">
+                        <div class="detail-row">
+                            <span class="detail-label">CRM:</span>
+                            <span class="detail-value">22222-SP</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">roberto.alves@vidaplus.com</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Telefone:</span>
+                            <span class="detail-value">(11) 55555-5555</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Experiência:</span>
+                            <span class="detail-value">20 anos</span>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">5.0</div>
+                            <div class="stat-label">Avaliação</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">178</div>
+                            <div class="stat-label">Consultas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">18</div>
+                            <div class="stat-label">Pacientes</div>
+                        </div>
+                    </div>
+                    
+                    <div class="professional-actions">
+                        <button class="action-btn primary" onclick="viewProfessional(5)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Perfil
+                        </button>
+                        <button class="action-btn secondary" onclick="scheduleWithProfessional(5)">
+                            <i class="fas fa-calendar-plus" style="color: #3b82f6;"></i>
+                            Agendar
+                        </button>
+                        <button class="action-btn success" onclick="startTelemedicine(5)">
+                            <i class="fas fa-video" style="color: #3b82f6;"></i>
+                            Telemedicina
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agenda do Dia -->
+            <div class="schedule-section">
+                <div class="schedule-header">
+                    <h2>Agenda de Hoje - Dr. João Santos</h2>
+                    <span class="specialty-badge">Cardiologia</span>
+                </div>
+                
+                <div class="schedule-grid">
+                    <div class="schedule-item">
+                        <div class="schedule-time">08:00 - 08:30</div>
+                        <div class="schedule-patient">Maria Silva Santos</div>
+                        <small style="color: var(--gray-500);">Consulta de retorno</small>
+                    </div>
+                    
+                    <div class="schedule-item">
+                        <div class="schedule-time">09:00 - 09:30</div>
+                        <div class="schedule-patient">João Pedro Oliveira</div>
+                        <small style="color: var(--gray-500);">Primeira consulta</small>
+                    </div>
+                    
+                    <div class="schedule-item">
+                        <div class="schedule-time">10:00 - 10:30</div>
+                        <div class="schedule-patient">Ana Costa Ferreira</div>
+                        <small style="color: var(--gray-500);">Telemedicina</small>
+                    </div>
+                    
+                    <div class="schedule-item">
+                        <div class="schedule-time">11:00 - 11:30</div>
+                        <div class="schedule-patient">Pedro Almeida Santos</div>
+                        <small style="color: var(--gray-500);">Consulta de retorno</small>
+                    </div>
+                    
+                    <div class="schedule-item">
+                        <div class="schedule-time">14:00 - 14:30</div>
+                        <div class="schedule-patient">Lucia Ferreira Lima</div>
+                        <small style="color: var(--gray-500);">Primeira consulta</small>
+                    </div>
+                    
+                    <div class="schedule-item">
+                        <div class="schedule-time">15:00 - 15:30</div>
+                        <div class="schedule-patient">Carlos Eduardo Silva</div>
+                        <small style="color: var(--gray-500);">Telemedicina</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div> <!-- Fechamento da main-content -->
+
+        <!-- Scripts -->
+    <script src="../js/navbar.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/enhanced-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/animations.js"></script>
+
+    <script>
+        // Funções para interação
+        function showAddProfessionalModal() {
+            alert('Modal de adicionar profissional seria aberto aqui');
+        }
+        
+        function viewProfessional(id) {
+            alert(`Visualizando perfil do profissional ID: ${id}`);
+        }
+        
+        function scheduleWithProfessional(id) {
+            alert(`Abrindo agenda para agendar com profissional ID: ${id}`);
+        }
+        
+        function startTelemedicine(id) {
+            alert(`Iniciando telemedicina com profissional ID: ${id}`);
+            window.location.href = 'telemedicina.html';
+        }
+        
+        function sendMessage(id) {
+            alert(`Enviando mensagem para profissional ID: ${id}`);
+        }
+        
+        // Filtros
+        document.getElementById('specialty-filter').addEventListener('change', function() {
+            console.log('Filtro de especialidade:', this.value);
+        });
+        
+        document.getElementById('status-filter').addEventListener('change', function() {
+            console.log('Filtro de status:', this.value);
+        });
+        
+        document.getElementById('sort-filter').addEventListener('change', function() {
+            console.log('Ordenação:', this.value);
+        });
+        
+        // Busca
+        document.querySelector('.search-box input').addEventListener('input', function() {
+            console.log('Busca:', this.value);
+        });
+    </script>
+</body>
+</html> 

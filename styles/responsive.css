@@ -1,0 +1,780 @@
+/* ========================================
+   RESPONSIVIDADE COMPLETA - SISTEMA VIDAPLUS
+   ======================================== */
+
+/* ========================================
+   BREAKPOINTS GLOBAIS
+   ======================================== */
+:root {
+    --breakpoint-xs: 480px;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --breakpoint-xxl: 1400px;
+}
+
+/* ========================================
+   DISPOSITIVOS MÓVEIS (Celulares)
+   ======================================== */
+@media (max-width: 767px) {
+    /* Navbar Mobile */
+    .top-navbar {
+        padding: 0.5rem;
+        height: 60px;
+    }
+
+    .nav-brand {
+        flex: 1;
+    }
+
+    .brand-text h1 {
+        font-size: 1.2rem;
+    }
+
+    .brand-text span {
+        font-size: 0.7rem;
+    }
+
+    .nav-menu {
+        display: none;
+    }
+
+    .nav-actions {
+        gap: 0.5rem;
+    }
+
+    .search-container {
+        display: none;
+    }
+
+    .user-info {
+        display: none;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .mobile-menu {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        width: 280px;
+        height: 100%;
+        background: var(--white);
+        box-shadow: var(--shadow-xl);
+        transition: left 0.3s ease;
+        z-index: 10000;
+    }
+
+    .mobile-menu.active {
+        left: 0;
+    }
+
+    .mobile-menu-header {
+        padding: 1rem;
+        border-bottom: 1px solid var(--gray-200);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .mobile-nav-menu {
+        padding: 1rem 0;
+    }
+
+    .mobile-nav-link {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        color: var(--gray-700);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid var(--gray-100);
+    }
+
+    .mobile-nav-link:hover,
+    .mobile-nav-link.active {
+        background: var(--primary-light);
+        color: var(--primary-color);
+    }
+
+    /* Main Content */
+    .main-content {
+        padding: 0.5rem;
+        margin-top: 60px;
+    }
+
+    /* Cards e Grids */
+    .patients-grid,
+    .appointments-grid,
+    .sessions-grid,
+    .professionals-grid,
+    .beds-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .patient-card,
+    .appointment-card,
+    .session-card,
+    .professional-card,
+    .bed-card {
+        padding: 1rem;
+    }
+
+    /* Estatísticas */
+    .patients-stats,
+    .scheduling-stats,
+    .telemedicine-stats,
+    .professionals-stats,
+    .beds-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    /* Filtros */
+    .patients-filters,
+    .scheduling-filters,
+    .telemedicine-filters,
+    .professionals-filters,
+    .beds-filters {
+        padding: 1rem;
+    }
+
+    .filters-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Calendário */
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.25rem;
+    }
+
+    .calendar-day {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.8rem;
+    }
+
+    /* Botões de Ação */
+    .patient-actions,
+    .appointment-actions,
+    .session-actions,
+    .professional-actions,
+    .bed-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .action-btn {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    /* Botões Flutuantes */
+    .add-patient-btn,
+    .add-appointment-btn,
+    .add-session-btn,
+    .add-professional-btn,
+    .add-bed-btn {
+        width: 60px;
+        height: 60px;
+        bottom: 1rem;
+        right: 1rem;
+        font-size: 1.2rem;
+    }
+
+    /* Modais */
+    .modal-content {
+        width: 95%;
+        margin: 1rem auto;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-header {
+        padding: 1rem;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    /* Dashboard */
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .quick-actions {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Chat */
+    .chat-widget {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .chat-toggle {
+        bottom: 5rem;
+        right: 1rem;
+    }
+
+    /* Formulários */
+    .form-container {
+        padding: 1rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Tabelas */
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 600px;
+    }
+}
+
+/* ========================================
+   TABLETS (768px - 991px)
+   ======================================== */
+@media (min-width: 768px) and (max-width: 991px) {
+    /* Navbar Tablet */
+    .top-navbar {
+        padding: 0.75rem 1rem;
+    }
+
+    .nav-menu {
+        gap: 1rem;
+    }
+
+    .nav-link span {
+        display: none;
+    }
+
+    .nav-link {
+        padding: 0.5rem;
+        min-width: 50px;
+        justify-content: center;
+    }
+
+    /* Main Content */
+    .main-content {
+        padding: 1rem;
+    }
+
+    /* Grids */
+    .patients-grid,
+    .appointments-grid,
+    .sessions-grid,
+    .professionals-grid,
+    .beds-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    /* Estatísticas */
+    .patients-stats,
+    .scheduling-stats,
+    .telemedicine-stats,
+    .professionals-stats,
+    .beds-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    /* Filtros */
+    .filters-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    /* Dashboard */
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    /* Calendário */
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.5rem;
+    }
+
+    /* Botões de Ação */
+    .patient-actions,
+    .appointment-actions,
+    .session-actions,
+    .professional-actions,
+    .bed-actions {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .action-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* Chat */
+    .chat-widget {
+        width: 350px;
+        height: 500px;
+    }
+
+    /* Formulários */
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+/* ========================================
+   NOTEBOOKS (992px - 1199px)
+   ======================================== */
+@media (min-width: 992px) and (max-width: 1199px) {
+    /* Navbar Notebook */
+    .top-navbar {
+        padding: 1rem 1.5rem;
+    }
+
+    .nav-menu {
+        gap: 1.5rem;
+    }
+
+    /* Main Content */
+    .main-content {
+        padding: 1.5rem;
+    }
+
+    /* Grids */
+    .patients-grid,
+    .appointments-grid,
+    .sessions-grid,
+    .professionals-grid,
+    .beds-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    /* Estatísticas */
+    .patients-stats,
+    .scheduling-stats,
+    .telemedicine-stats,
+    .professionals-stats,
+    .beds-stats {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+
+    /* Dashboard */
+    .dashboard-stats {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    /* Filtros */
+    .filters-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+
+    /* Calendário */
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.75rem;
+    }
+
+    /* Chat */
+    .chat-widget {
+        width: 400px;
+        height: 600px;
+    }
+
+    /* Formulários */
+    .form-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+}
+
+/* ========================================
+   DESKTOPS (1200px+)
+   ======================================== */
+@media (min-width: 1200px) {
+    /* Navbar Desktop */
+    .top-navbar {
+        padding: 1rem 2rem;
+    }
+
+    .nav-menu {
+        gap: 2rem;
+    }
+
+    /* Main Content */
+    .main-content {
+        padding: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Grids */
+    .patients-grid,
+    .appointments-grid,
+    .sessions-grid,
+    .professionals-grid,
+    .beds-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2.5rem;
+    }
+
+    /* Estatísticas */
+    .patients-stats,
+    .scheduling-stats,
+    .telemedicine-stats,
+    .professionals-stats,
+    .beds-stats {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2.5rem;
+    }
+
+    /* Dashboard */
+    .dashboard-stats {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2.5rem;
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2.5rem;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
+    }
+
+    /* Filtros */
+    .filters-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 2rem;
+    }
+
+    /* Calendário */
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 1rem;
+    }
+
+    /* Chat */
+    .chat-widget {
+        width: 450px;
+        height: 650px;
+    }
+
+    /* Formulários */
+    .form-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2.5rem;
+    }
+}
+
+/* ========================================
+   DISPOSITIVOS COM TELA PEQUENA (320px - 479px)
+   ======================================== */
+@media (max-width: 479px) {
+    /* Ajustes específicos para telas muito pequenas */
+    .main-content {
+        padding: 0.25rem;
+        margin-top: 50px;
+    }
+
+    .patient-card,
+    .appointment-card,
+    .session-card,
+    .professional-card,
+    .bed-card {
+        padding: 0.75rem;
+    }
+
+    .stat-card {
+        padding: 0.75rem;
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+    }
+
+    .action-btn {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .add-patient-btn,
+    .add-appointment-btn,
+    .add-session-btn,
+    .add-professional-btn,
+    .add-bed-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+
+    .modal-content {
+        width: 98%;
+        margin: 0.5rem auto;
+    }
+
+    .form-container {
+        padding: 0.5rem;
+    }
+}
+
+/* ========================================
+   DISPOSITIVOS COM TELA GRANDE (1400px+)
+   ======================================== */
+@media (min-width: 1400px) {
+    .main-content {
+        max-width: 1600px;
+    }
+
+    .patients-grid,
+    .appointments-grid,
+    .sessions-grid,
+    .professionals-grid,
+    .beds-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .quick-actions {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* ========================================
+   ORIENTAÇÃO LANDSCAPE EM MÓVEIS
+   ======================================== */
+@media (max-width: 767px) and (orientation: landscape) {
+    .mobile-menu {
+        width: 250px;
+    }
+
+    .main-content {
+        margin-top: 50px;
+    }
+
+    .patients-grid,
+    .appointments-grid,
+    .sessions-grid,
+    .professionals-grid,
+    .beds-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .patients-stats,
+    .scheduling-stats,
+    .telemedicine-stats,
+    .professionals-stats,
+    .beds-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ========================================
+   AJUSTES DE ACESSIBILIDADE
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    /* Suporte básico para modo escuro do sistema */
+    .top-navbar {
+        background: #1a1a1a;
+        color: #ffffff;
+    }
+
+    .nav-link {
+        color: #ffffff;
+    }
+
+    .nav-link:hover {
+        background: #333333;
+    }
+}
+
+/* ========================================
+   IMPRESSÃO
+   ======================================== */
+@media print {
+    .top-navbar,
+    .add-patient-btn,
+    .add-appointment-btn,
+    .add-session-btn,
+    .add-professional-btn,
+    .add-bed-btn,
+    .chat-widget,
+    .chat-toggle {
+        display: none !important;
+    }
+
+    .main-content {
+        margin: 0;
+        padding: 0;
+    }
+
+    .patient-card,
+    .appointment-card,
+    .session-card,
+    .professional-card,
+    .bed-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+}
+
+/* ========================================
+   UTILITÁRIOS RESPONSIVOS
+   ======================================== */
+.hidden-xs { display: none; }
+.hidden-sm { display: none; }
+.hidden-md { display: none; }
+.hidden-lg { display: none; }
+.hidden-xl { display: none; }
+
+@media (min-width: 576px) {
+    .hidden-xs { display: block; }
+}
+
+@media (min-width: 768px) {
+    .hidden-sm { display: block; }
+}
+
+@media (min-width: 992px) {
+    .hidden-md { display: block; }
+}
+
+@media (min-width: 1200px) {
+    .hidden-lg { display: block; }
+}
+
+@media (min-width: 1400px) {
+    .hidden-xl { display: block; }
+}
+
+/* ========================================
+   FIXES PARA DISPOSITIVOS ESPECÍFICOS
+   ======================================== */
+
+/* iPhone SE e dispositivos similares */
+@media (max-width: 375px) {
+    .brand-text h1 {
+        font-size: 1rem;
+    }
+
+    .brand-text span {
+        font-size: 0.6rem;
+    }
+
+    .nav-actions {
+        gap: 0.25rem;
+    }
+}
+
+/* iPad Pro */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
+    .patients-grid,
+    .appointments-grid,
+    .sessions-grid,
+    .professionals-grid,
+    .beds-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Dispositivos com notch */
+@supports (padding: max(0px)) {
+    .top-navbar {
+        padding-top: max(1rem, env(safe-area-inset-top));
+    }
+
+    .main-content {
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+    }
+} 

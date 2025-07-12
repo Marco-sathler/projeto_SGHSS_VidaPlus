@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemedicina - VidaPlus</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/components.css">
+    <link rel="stylesheet" href="../styles/responsive.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/button-icons.css">
+    <link rel="stylesheet" href="../styles/theme.css">
+    <link rel="stylesheet" href="../styles/notifications.css">
+    <link rel="stylesheet" href="../styles/filters.css">
+    <link rel="stylesheet" href="../styles/charts.css">
+    <link rel="stylesheet" href="../styles/chat.css">
+    <link rel="stylesheet" href="../styles/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .telemedicine-page {
+            min-height: 100vh;
+            background: var(--light-gray);
+            /* padding-top: 90px; Removido o espaço para o navbar superior */
+        }
+        
+        .telemedicine-header {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: var(--spacing-8) 0;
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .telemedicine-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+        }
+        
+        .telemedicine-header h1 {
+            font-size: var(--font-size-4xl);
+            margin-bottom: var(--spacing-2);
+        }
+        
+        .telemedicine-header p {
+            font-size: var(--font-size-lg);
+            opacity: 0.9;
+        }
+        
+        .telemedicine-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+        }
+        
+        .telemedicine-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .telemedicine-filters {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            margin-bottom: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+        }
+        
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: var(--spacing-6);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .session-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .session-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .session-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .session-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: var(--font-size-2xl);
+            font-weight: 600;
+        }
+        
+        .session-info h3 {
+            color: var(--gray-800);
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-1);
+        }
+        
+        .session-type {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: var(--spacing-1);
+        }
+        
+        .session-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .status-indicator.active {
+            background: var(--success-color);
+        }
+        
+        .status-indicator.waiting {
+            background: var(--warning-color);
+        }
+        
+        .status-indicator.ended {
+            background: var(--gray-400);
+        }
+        
+        .session-details {
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-2);
+            font-size: var(--font-size-sm);
+        }
+        
+        .detail-label {
+            color: var(--gray-600);
+        }
+        
+        .detail-value {
+            color: var(--gray-800);
+            font-weight: 500;
+        }
+        
+        .session-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: var(--spacing-3);
+            background: var(--gray-50);
+            border-radius: 12px;
+        }
+        
+        .stat-number {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: var(--font-size-xs);
+            color: var(--gray-600);
+            text-transform: uppercase;
+        }
+        
+        .session-actions {
+            display: flex;
+            gap: var(--spacing-2);
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: var(--spacing-2) var(--spacing-4);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-1);
+        }
+        
+        .action-btn.primary {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .action-btn.secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+        
+        .action-btn.success {
+            background: var(--success-color);
+            color: var(--white);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .add-session-btn {
+            position: fixed;
+            bottom: var(--spacing-6);
+            right: var(--spacing-6);
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: var(--spacing-4);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            z-index: 100;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .add-session-btn:hover {
+            transform: translateY(-2px) scale(1.1);
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: var(--spacing-3);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-3) var(--spacing-3) var(--spacing-10);
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .filters select {
+            width: 100%;
+            padding: var(--spacing-3);
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            font-size: var(--font-size-sm);
+            background: var(--white);
+        }
+        
+        .filters select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="top-navbar" id="top-navbar">
+        <div class="nav-brand" onclick="window.location.href='dashboard.html'">
+            <div class="brand-logo">
+                <div class="v-plus">V+</div>
+            </div>
+            <div class="brand-text">
+                <h1>VidaPlus</h1>
+                <span>Sistema Hospitalar</span>
+            </div>
+        </div>
+
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-link" data-page="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            
+            <a href="pacientes.html" class="nav-link" data-page="pacientes">
+                <i class="fas fa-user-injured"></i>
+                <span>Pacientes</span>
+            </a>
+            
+            <a href="agendamento.html" class="nav-link" data-page="agendamento">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Agendamento</span>
+            </a>
+            
+            <a href="telemedicina.html" class="nav-link active" data-page="telemedicina">
+                <i class="fas fa-video"></i>
+                <span>Telemedicina</span>
+            </a>
+            
+            <a href="profissionais.html" class="nav-link" data-page="profissionais">
+                <i class="fas fa-user-md"></i>
+                <span>Profissionais</span>
+            </a>
+            
+            <a href="leitos.html" class="nav-link" data-page="leitos">
+                <i class="fas fa-bed"></i>
+                <span>Leitos</span>
+            </a>
+            
+            <a href="relatorios.html" class="nav-link" data-page="relatorios">
+                <i class="fas fa-chart-line"></i>
+                <span>Relatórios</span>
+            </a>
+            
+            <a href="configuracoes.html" class="nav-link" data-page="configuracoes">
+                <i class="fas fa-cog"></i>
+                <span>Configurações</span>
+            </a>
+        </div>
+
+        <div class="nav-actions">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" placeholder="Buscar...">
+            </div>
+            
+            <button class="action-btn" onclick="openModal('notificationsModal')">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </button>
+            
+            <button class="action-btn" onclick="openModal('infoModal')">
+                <i class="fas fa-question-circle"></i>
+            </button>
+            
+            <div class="user-profile" onclick="toggleUserMenu()">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h4>Dr. João Santos</h4>
+                    <p>Administrador</p>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Modal de Notificações -->
+    <div id="notificationsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Notificações</h3>
+                <button class="modal-close" onclick="closeModal('notificationsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Novo paciente cadastrado</h4>
+                        <p>Maria Silva foi cadastrada no sistema</p>
+                        <span class="notification-time">Há 5 minutos</span>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Consulta agendada</h4>
+                        <p>Consulta com Dr. João marcada para amanhã</p>
+                        <span class="notification-time">Há 15 minutos</span>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <div class="notification-content">
+                        <h4>Leito disponível</h4>
+                        <p>Leito 205 foi liberado e está disponível</p>
+                        <span class="notification-time">Há 1 hora</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Informações -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Informações do Sistema</h3>
+                <button class="modal-close" onclick="closeModal('infoModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="info-section">
+                    <h4><i class="fas fa-info-circle"></i> Sobre o VidaPlus</h4>
+                    <p>Sistema hospitalar completo para gestão de pacientes, profissionais, leitos e agendamentos.</p>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-users"></i> Usuários Ativos</h4>
+                    <p>Atualmente há <strong>127</strong> usuários ativos no sistema.</p>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-hospital"></i> Estatísticas</h4>
+                    <ul>
+                        <li>Pacientes cadastrados: <strong>1.234</strong></li>
+                        <li>Profissionais: <strong>89</strong></li>
+                        <li>Leitos ocupados: <strong>156/200</strong></li>
+                        <li>Consultas hoje: <strong>45</strong></li>
+                    </ul>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-clock"></i> Última Atualização</h4>
+                    <p>Dados atualizados em: <strong>15/12/2025 às 14:30</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <h3>Menu</h3>
+                <button class="close-menu" onclick="closeMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="mobile-nav-menu">
+                <a href="dashboard.html" class="mobile-nav-link" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                
+                <a href="pacientes.html" class="mobile-nav-link" data-page="pacientes">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Pacientes</span>
+                </a>
+                
+                <a href="agendamento.html" class="mobile-nav-link" data-page="agendamento">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Agendamento</span>
+                </a>
+                
+                <a href="telemedicina.html" class="mobile-nav-link active" data-page="telemedicina">
+                    <i class="fas fa-video"></i>
+                    <span>Telemedicina</span>
+                </a>
+                
+                <a href="profissionais.html" class="mobile-nav-link" data-page="profissionais">
+                    <i class="fas fa-user-md"></i>
+                    <span>Profissionais</span>
+                </a>
+                
+                <a href="leitos.html" class="mobile-nav-link" data-page="leitos">
+                    <i class="fas fa-bed"></i>
+                    <span>Leitos</span>
+                </a>
+                
+                <a href="relatorios.html" class="mobile-nav-link" data-page="relatorios">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Relatórios</span>
+                </a>
+                
+                <a href="configuracoes.html" class="mobile-nav-link" data-page="configuracoes">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- User Menu Dropdown -->
+    <div class="user-menu" id="user-menu">
+        <a href="#" class="user-menu-item">
+            <i class="fas fa-user"></i>
+            <span>Meu Perfil</span>
+        </a>
+        <a href="#" class="user-menu-item">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Sair</span>
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="telemedicine-page page-transition">
+
+        <!-- Botão Adicionar -->
+        <button class="add-session-btn" onclick="showAddSessionModal()">
+            <i class="fas fa-plus" style="color: #3b82f6;"></i>
+        </button>
+
+        <!-- Header -->
+        <header class="telemedicine-header">
+            <div class="telemedicine-header-content">
+                <h1><i class="fas fa-video"></i> Telemedicina</h1>
+                <p>Gerencie consultas remotas e sessões de telemedicina</p>
+            </div>
+        </header>
+
+        <div class="telemedicine-container">
+            <!-- Estatísticas -->
+            <div class="telemedicine-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Sessões Hoje</h3>
+                        <p class="stat-number">23</p>
+                        <span class="stat-change positive">+5 vs ontem</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Em Andamento</h3>
+                        <p class="stat-number">4</p>
+                        <span class="stat-change positive">Ativas agora</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Profissionais Online</h3>
+                        <p class="stat-number">8</p>
+                        <span class="stat-change positive">Disponíveis</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Avaliação Média</h3>
+                        <p class="stat-number">4.9</p>
+                        <span class="stat-change positive">+0.1 este mês</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="telemedicine-filters">
+                <div class="filters-grid">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar por paciente ou profissional...">
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="status-filter">
+                            <option value="">Todos os status</option>
+                            <option value="active">Ativa</option>
+                            <option value="waiting">Aguardando</option>
+                            <option value="ended">Finalizada</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="specialty-filter">
+                            <option value="">Todas as especialidades</option>
+                            <option value="cardiologia">Cardiologia</option>
+                            <option value="dermatologia">Dermatologia</option>
+                            <option value="ortopedia">Ortopedia</option>
+                            <option value="pediatria">Pediatria</option>
+                            <option value="neurologia">Neurologia</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="sort-filter">
+                            <option value="time">Ordenar por Horário</option>
+                            <option value="patient">Ordenar por Paciente</option>
+                            <option value="doctor">Ordenar por Profissional</option>
+                            <option value="status">Ordenar por Status</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Sessões -->
+            <div class="sessions-grid">
+                <!-- Sessão 1 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-avatar">MS</div>
+                        <div class="session-info">
+                            <h3>Maria Silva Santos</h3>
+                            <div class="session-type">Consulta de Retorno</div>
+                            <div class="session-status">
+                                <div class="status-indicator active"></div>
+                                <span>Ativa</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="session-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Profissional:</span>
+                            <span class="detail-value">Dr. João Santos</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Especialidade:</span>
+                            <span class="detail-value">Cardiologia</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Horário:</span>
+                            <span class="detail-value">14:00 - 14:30</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Duração:</span>
+                            <span class="detail-value">25 min</span>
+                        </div>
+                    </div>
+                    
+                    <div class="session-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">4.9</div>
+                            <div class="stat-label">Avaliação</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">Sessões</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">98%</div>
+                            <div class="stat-label">Qualidade</div>
+                        </div>
+                    </div>
+                    
+                    <div class="session-actions">
+                        <button class="action-btn primary" onclick="joinSession(1)">
+                            <i class="fas fa-video" style="color: #3b82f6;"></i>
+                            Entrar
+                        </button>
+                        <button class="action-btn secondary" onclick="viewSession(1)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Detalhes
+                        </button>
+                        <button class="action-btn success" onclick="endSession(1)">
+                            <i class="fas fa-stop" style="color: #3b82f6;"></i>
+                            Finalizar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sessão 2 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-avatar">JP</div>
+                        <div class="session-info">
+                            <h3>João Pedro Oliveira</h3>
+                            <div class="session-type">Primeira Consulta</div>
+                            <div class="session-status">
+                                <div class="status-indicator waiting"></div>
+                                <span>Aguardando</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="session-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Profissional:</span>
+                            <span class="detail-value">Dra. Ana Costa</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Especialidade:</span>
+                            <span class="detail-value">Dermatologia</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Horário:</span>
+                            <span class="detail-value">15:00 - 15:30</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Duração:</span>
+                            <span class="detail-value">30 min</span>
+                        </div>
+                    </div>
+                    
+                    <div class="session-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">-</div>
+                            <div class="stat-label">Avaliação</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1</div>
+                            <div class="stat-label">Sessão</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">-</div>
+                            <div class="stat-label">Qualidade</div>
+                        </div>
+                    </div>
+                    
+                    <div class="session-actions">
+                        <button class="action-btn primary" onclick="joinSession(2)">
+                            <i class="fas fa-video"></i>
+                            Entrar
+                        </button>
+                        <button class="action-btn secondary" onclick="viewSession(2)">
+                            <i class="fas fa-eye"></i>
+                            Detalhes
+                        </button>
+                        <button class="action-btn secondary" onclick="rescheduleSession(2)">
+                            <i class="fas fa-calendar" style="color: #3b82f6;"></i>
+                            Reagendar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sessão 3 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-avatar">AC</div>
+                        <div class="session-info">
+                            <h3>Ana Costa Ferreira</h3>
+                            <div class="session-type">Consulta de Retorno</div>
+                            <div class="session-status">
+                                <div class="status-indicator ended"></div>
+                                <span>Finalizada</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="session-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Profissional:</span>
+                            <span class="detail-value">Dr. Carlos Lima</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Especialidade:</span>
+                            <span class="detail-value">Ortopedia</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Horário:</span>
+                            <span class="detail-value">10:00 - 10:30</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Duração:</span>
+                            <span class="detail-value">28 min</span>
+                        </div>
+                    </div>
+                    
+                    <div class="session-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">5.0</div>
+                            <div class="stat-label">Avaliação</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Sessões</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">99%</div>
+                            <div class="stat-label">Qualidade</div>
+                        </div>
+                    </div>
+                    
+                    <div class="session-actions">
+                        <button class="action-btn secondary" onclick="viewSession(3)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Detalhes
+                        </button>
+                        <button class="action-btn secondary" onclick="viewRecording(3)">
+                            <i class="fas fa-play" style="color: #3b82f6;"></i>
+                            Gravação
+                        </button>
+                        <button class="action-btn success" onclick="scheduleFollowUp(3)">
+                            <i class="fas fa-calendar-plus" style="color: #3b82f6;"></i>
+                            Retorno
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sessão 4 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-avatar">PS</div>
+                        <div class="session-info">
+                            <h3>Pedro Almeida Santos</h3>
+                            <div class="session-type">Primeira Consulta</div>
+                            <div class="session-status">
+                                <div class="status-indicator waiting"></div>
+                                <span>Aguardando</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="session-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Profissional:</span>
+                            <span class="detail-value">Dr. Roberto Alves</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Especialidade:</span>
+                            <span class="detail-value">Neurologia</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Horário:</span>
+                            <span class="detail-value">16:00 - 16:30</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Duração:</span>
+                            <span class="detail-value">30 min</span>
+                        </div>
+                    </div>
+                    
+                    <div class="session-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">-</div>
+                            <div class="stat-label">Avaliação</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1</div>
+                            <div class="stat-label">Sessão</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">-</div>
+                            <div class="stat-label">Qualidade</div>
+                        </div>
+                    </div>
+                    
+                    <div class="session-actions">
+                        <button class="action-btn primary" onclick="joinSession(4)">
+                            <i class="fas fa-video" style="color: #3b82f6;"></i>
+                            Entrar
+                        </button>
+                        <button class="action-btn secondary" onclick="viewSession(4)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Detalhes
+                        </button>
+                        <button class="action-btn secondary" onclick="rescheduleSession(4)">
+                            <i class="fas fa-calendar" style="color: #3b82f6;"></i>
+                            Reagendar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sessão 5 -->
+                <div class="session-card">
+                    <div class="session-header">
+                        <div class="session-avatar">LF</div>
+                        <div class="session-info">
+                            <h3>Lucia Ferreira Lima</h3>
+                            <div class="session-type">Consulta de Retorno</div>
+                            <div class="session-status">
+                                <div class="status-indicator active"></div>
+                                <span>Ativa</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="session-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Profissional:</span>
+                            <span class="detail-value">Dra. Fernanda Silva</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Especialidade:</span>
+                            <span class="detail-value">Pediatria</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Horário:</span>
+                            <span class="detail-value">17:00 - 17:30</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Duração:</span>
+                            <span class="detail-value">25 min</span>
+                        </div>
+                    </div>
+                    
+                    <div class="session-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">4.8</div>
+                            <div class="stat-label">Avaliação</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">15</div>
+                            <div class="stat-label">Sessões</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">97%</div>
+                            <div class="stat-label">Qualidade</div>
+                        </div>
+                    </div>
+                    
+                    <div class="session-actions">
+                        <button class="action-btn primary" onclick="joinSession(5)">
+                            <i class="fas fa-video" style="color: #3b82f6;"></i>
+                            Entrar
+                        </button>
+                        <button class="action-btn secondary" onclick="viewSession(5)">
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                            Detalhes
+                        </button>
+                        <button class="action-btn success" onclick="endSession(5)">
+                            <i class="fas fa-stop" style="color: #3b82f6;"></i>
+                            Finalizar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div> <!-- Fechamento da main-content -->
+
+        <!-- Scripts -->
+    <script src="../js/navbar.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/enhanced-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/animations.js"></script>
+
+    <script>
+        // Funções para interação
+        function showAddSessionModal() {
+            alert('Modal de adicionar sessão seria aberto aqui');
+        }
+        
+        function joinSession(id) {
+            alert(`Entrando na sessão ID: ${id}`);
+        }
+        
+        function viewSession(id) {
+            alert(`Visualizando detalhes da sessão ID: ${id}`);
+        }
+        
+        function endSession(id) {
+            alert(`Finalizando sessão ID: ${id}`);
+        }
+        
+        function rescheduleSession(id) {
+            alert(`Reagendando sessão ID: ${id}`);
+        }
+        
+        function viewRecording(id) {
+            alert(`Visualizando gravação da sessão ID: ${id}`);
+        }
+        
+        function scheduleFollowUp(id) {
+            alert(`Agendando retorno para sessão ID: ${id}`);
+        }
+        
+        // Filtros
+        document.getElementById('status-filter').addEventListener('change', function() {
+            console.log('Filtro de status:', this.value);
+        });
+        
+        document.getElementById('specialty-filter').addEventListener('change', function() {
+            console.log('Filtro de especialidade:', this.value);
+        });
+        
+        document.getElementById('sort-filter').addEventListener('change', function() {
+            console.log('Ordenação:', this.value);
+        });
+        
+        // Busca
+        document.querySelector('.search-box input').addEventListener('input', function() {
+            console.log('Busca:', this.value);
+        });
+    </script>
+</body>
+</html> 

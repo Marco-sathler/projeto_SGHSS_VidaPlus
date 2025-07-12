@@ -1,0 +1,168 @@
+/* ===== BOTÃO ICONS - GARANTIR ÍCONES BRANCOS ===== */
+
+/* Botões com texto branco - ícones devem ser brancos */
+.action-btn.primary i,
+.action-btn.success i,
+.btn-primary i,
+.btn-login i,
+.add-patient-btn i,
+.floating-btn i,
+.splash-logo-icon i,
+.sobre-logo-icon i,
+.sobre-card-icon i,
+.valor-item i,
+.login-section .btn-login i {
+    color: var(--white) !important;
+}
+
+/* Botões com fundo escuro - ícones brancos */
+.action-btn[style*="background: var(--primary-color)"] i,
+.action-btn[style*="background: var(--success-color)"] i,
+.action-btn[style*="background: linear-gradient"] i,
+.btn[style*="background: var(--primary-color)"] i,
+.btn[style*="background: var(--success-color)"] i,
+.btn[style*="background: linear-gradient"] i {
+    color: var(--white) !important;
+}
+
+/* Botões com classe específica para ícones brancos */
+.action-btn.primary,
+.action-btn.success,
+.btn-primary,
+.btn-login,
+.add-patient-btn,
+.floating-btn {
+    color: var(--white);
+}
+
+.action-btn.primary i,
+.action-btn.success i,
+.btn-primary i,
+.btn-login i,
+.add-patient-btn i,
+.floating-btn i {
+    color: var(--white) !important;
+}
+
+/* Ícones em cards com fundo colorido */
+.stat-icon i,
+.card-avatar i,
+.patient-avatar i,
+.splash-logo-icon i,
+.sobre-logo-icon i,
+.sobre-card-icon i {
+    color: var(--white) !important;
+}
+
+/* Ícones em elementos com gradiente */
+[style*="background: linear-gradient"] i,
+[style*="background: var(--primary-color)"] i,
+[style*="background: var(--success-color)"] i {
+    color: var(--white) !important;
+}
+
+/* Garantir que ícones em botões de ação sejam brancos */
+.card-actions .action-btn.primary i,
+.card-actions .action-btn.success i,
+.patient-actions .action-btn.primary i,
+.patient-actions .action-btn.success i {
+    color: var(--white) !important;
+}
+
+/* Ícones em elementos de status ativo */
+.status-indicator.active + span i,
+.card-status .active i {
+    color: var(--white) !important;
+}
+
+/* Ícones em elementos de navegação ativos */
+.nav-link.active i,
+.mobile-nav-link.active i {
+    color: var(--white) !important;
+}
+
+/* Ícones em elementos de destaque */
+.highlight i,
+.featured i,
+.premium i {
+    color: var(--white) !important;
+}
+
+/* Override para qualquer ícone em botão com texto branco */
+button[style*="color: white"] i,
+button[style*="color: var(--white)"] i,
+a[style*="color: white"] i,
+a[style*="color: var(--white)"] i {
+    color: var(--white) !important;
+}
+
+/* Garantir que ícones em elementos com texto branco sejam brancos */
+[style*="color: white"] i,
+[style*="color: var(--white)"] i {
+    color: var(--white) !important;
+}
+
+/* Ícones em elementos com classe de texto branco */
+.text-white i,
+.white-text i {
+    color: var(--white) !important;
+}
+
+/* Ícones em botões de ação principais */
+.primary-action i,
+.main-action i,
+.cta-button i {
+    color: var(--white) !important;
+}
+
+/* Ícones em elementos de destaque com fundo colorido */
+.highlight-card i,
+.featured-item i,
+.premium-card i {
+    color: var(--white) !important;
+}
+
+/* Garantir que ícones em elementos com gradiente sejam brancos */
+.gradient-bg i,
+.gradient-card i,
+.gradient-button i {
+    color: var(--white) !important;
+}
+
+/* Ícones em elementos de navegação com fundo colorido */
+.nav-highlight i,
+.nav-active i,
+.nav-primary i {
+    color: var(--white) !important;
+}
+
+/* Ícones em elementos de status com fundo colorido */
+.status-primary i,
+.status-success i,
+.status-highlight i {
+    color: var(--white) !important;
+}
+
+/* Override final para garantir ícones brancos em elementos importantes */
+.action-btn.primary *,
+.action-btn.success *,
+.btn-primary *,
+.btn-login *,
+.add-patient-btn *,
+.floating-btn *,
+.stat-icon *,
+.card-avatar *,
+.patient-avatar *,
+.splash-logo-icon *,
+.sobre-logo-icon *,
+.sobre-card-icon * {
+    color: var(--white) !important;
+}
+
+/* Garantir que ícones em elementos com texto branco sejam brancos */
+[style*="color: white"] *,
+[style*="color: var(--white)"] *,
+.text-white *,
+.white-text * {
+    color: var(--white) !important;
+} 
